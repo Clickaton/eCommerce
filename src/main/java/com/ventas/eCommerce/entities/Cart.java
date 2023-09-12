@@ -8,12 +8,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -21,14 +22,15 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Getter @Setter
+@Entity
+@Getter
+@Setter
 public class Cart {
-    
-   @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
-    private Product product;
+    @OneToMany
+    @JoinColumn(name = "cart_id") // Nombre de la columna que hace referencia al carrito en la tabla de productos
+    private List<Product> products;
 }
-    
-    

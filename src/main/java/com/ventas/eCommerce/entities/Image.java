@@ -28,5 +28,9 @@ public class Image {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+   
+   private String mime;
+   private String name;
+   //private Byte[] content;
 
 }
