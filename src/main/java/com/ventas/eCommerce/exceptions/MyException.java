@@ -8,6 +8,11 @@ package com.ventas.eCommerce.exceptions;
  *
  * @author chris
  */
-public class MyException {
+public class MyException extends Exception{
+   
+    public MyException(String msg){
+        super(msg);
+    }
+    
     
 }
