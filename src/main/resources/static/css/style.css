@@ -1,0 +1,28 @@
+.logo {
+  width: 110px;
+  height: 80px;
+  background: rgb(255, 255, 255);
+  border-radius: 2em;
+  margin-right: 3em;
+}
+
+.linkCatalogo {
+  color: #fff !important ;
+}
+
+.form {
+  padding-top: 50px;
+  width: 65%;
+  background-color: aliceblue;
+  border-radius: 20px;
+  padding: 25px;
+  text-align: left;
+  justify-content: center;
+}
+
+.content-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 110vh;
+}
