@@ -18,12 +18,13 @@
         <nav th:replace="fragments/navbar :: nav"></nav>
     </header>
 
+    <div th:replace="fragments/error :: mensajeError"></div>
+
     <div class="content-form">
-        <form class="form" action="" method="POST">
+        <form class="form" action="/product/registed" method="post">
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="name">
+                <label class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name">
                 <div id="emailHelp" class="form-text">Ingrese el nombre del producto</div>
             </div>
             <div class="mb-3">
@@ -52,11 +53,18 @@
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Categoría</label>
-                <select name="cars" id="cars" form="carform">
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="opel">Opel</option>
-                    <option value="audi">Audi</option>
+                <select name="category">
+                    <!--<option value="null">Seleccione una categoría.</option>>-->
+                    <option value="ELECTRONICDEVICES">Aparatos Electronicos</option>
+                    <option value="SERVICES">Servicios</option>
+                    <option value="FOOD">Comida</option>
+                    <option value="INDUMENTARY">Indumentaria</option>
+                    <option value="JEWELRY">Joyeria</option>
+                    <option value="ENTRETAINMENT">Entretenimiento</option>
+                    <option value="RAW_MATERIAL">Materia prima</option>
+                    <option value="CLEANLINESS">Limpieza</option>
+                    <option value="CONSTRUCTION">Construcción</option>
+
                 </select>
                 <div id="emailHelp" class="form-text">Seleccione la categoría del producto que desea publicar.</div>
             </div>

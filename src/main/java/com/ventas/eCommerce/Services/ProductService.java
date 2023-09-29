@@ -28,12 +28,13 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional
-    public void Register(String name, String description, Image image, String brand, Double price, Category category, Boolean creationDeletion, Integer stock) throws MyException{
+    public void Register(String name, String description,/* Image image,*/ String brand, Double price, Category category, Boolean creationDeletion, Integer stock) throws MyException{
+        validar(name, description, brand, price, category, creationDeletion, stock);
         Product product = new Product();
 
         product.setName(name);
         product.setDescription(description);
-        product.setImage(image);
+        //product.setImage(image);
         product.setBrand(brand);
         product.setPrice(price);
         product.setCategory(category);
@@ -74,17 +75,17 @@ public class ProductService {
         return products;
     }
 
-        public void validar(String name, String description, Image image, String brand, Double price, Category category, Boolean creationDeletion, Integer stock) throws MyException, ValidationException{
+        public void validar(String name, String description, /*Image image,*/ String brand, Double price, Category category, Boolean creationDeletion, Integer stock) throws MyException{
         
         if (name != null || name.isEmpty()) {
-            throw new ValidationException("El nombre del producto no puede ser nulo o estar vacío.");
+            throw new MyException("El nombre del producto no puede ser nulo o estar vacío.");
         }
         if (description != null || description.isEmpty() ) {
-            throw new ValidationException("La descripción no puede estar vacía o estar nula.");
+            throw new MyException("La descripción no puede estar vacía o estar nula.");
         }
-        if (image == null) {
+        /*if (image == null) {
             throw new MyException("Debe seleccionar una imagen");
-        }
+        }*/
         if (brand.isEmpty() || brand == null) {
             throw new MyException("La marca no puede ser nula o estar vacia");
         }

@@ -26,3 +26,9 @@
   align-items: center;
   height: 110vh;
 }
+
+.error {
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+}

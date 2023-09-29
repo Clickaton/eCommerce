@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,24 +25,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-    
+
     @Autowired
     private ProductService productService;
-    
-     @GetMapping("/register")
+
+    @GetMapping("/register")
     public String registrar_producto() {
-    
+
         return "ProductForm.html";
     }
-    
+
     @PostMapping("/registed")
-    public String registro_producto(@RequestParam String name, String description, Image image, String brand, Double price, Category category, Boolean creationDeletion, Integer stock){
+    public String registro_producto(@RequestParam String name,  String description, Image image, String brand, Double price, String category, Boolean creationDeletion, Integer stock, ModelMap model) {
         try {
-            productService.Register(name, description, image, brand, price, Category.JEWELRY, Boolean.TRUE, Integer.SIZE);
+            Category categoryEnum = Category.valueOf(category);
+            productService.Register(name, description, brand, price, categoryEnum, Boolean.TRUE, Integer.SIZE);
+            model.put("exito", "EL producto se ha registrado correctamente.");
+            return "ProductForm.html";
         } catch (MyException ex) {
-            System.out.println("Error");
+            model.put("error", ex.getMessage());
+            
         }
-        return "index.html";
+        return "ProductForm.html";
     }
-    
 }

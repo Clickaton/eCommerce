@@ -5,10 +5,13 @@
 package com.ventas.eCommerce.entities;
 
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +35,7 @@ public class Image {
    
    private String mime;
    private String name;
-   //private Byte[] content;
+   @Lob @Basic(fetch = FetchType.LAZY) //Informo a spring que este dato puede ser grande y pesado. y el tipo de carga lenta o peresosa.
+   private byte[] content;
 
 }
