@@ -1,0 +1,12 @@
+/* Esto se utiliza para colocar una carta alado de la otra*/
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Para centrar las cartas horizontalmente */
+}
+
+.card-box {
+  width: 300px; /* Ancho fijo de cada tarjeta o ajusta según tus necesidades */
+  margin: 10px; /* Espacio entre las tarjetas */
+}
+/* Esto se utiliza para colocar una carta alado de la otra*/

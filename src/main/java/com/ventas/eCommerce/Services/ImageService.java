@@ -22,7 +22,7 @@ public class ImageService {
     @Autowired
     private ImageRepository imagenRepositorio;
 
-    public Image guardarImagen(MultipartFile file)  { 
+    public Image guardarImagen(MultipartFile file) throws MyException{ 
        
         if (file != null) {
             try {

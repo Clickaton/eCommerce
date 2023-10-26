@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -28,12 +29,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     @Transactional
-    public void Register(String name, String lastName, Image image, String password, String password2, String phone, Rol rol) {
+    public void Register(String name, String lastName, MultipartFile file, String password, String password2, String phone, Rol rol) throws MyException {
         User user = new User();
 
         user.setName(name);
         user.setLastName(lastName);
+        Image image = imageService.guardarImagen(file);
         user.setImage(image);
         user.setPassword(password);
         user.setPassword2(password2);
@@ -53,26 +58,34 @@ public class UserService {
         return users;
     }
 
-    public void update(Integer id, String name, String lastName, Image image, String password, String password2, String phone, Rol rol) {
+    public void update(Integer id, String name, String email, String lastName, MultipartFile file, String password, String password2, String phone, Rol rol) throws MyException {
 
         Optional<User> respuesta = userRepository.findById(id);
 
         if (respuesta.isPresent()) {
             User user = respuesta.get();
             user.setName(name);
+            user.setEmail(email);
             user.setLastName(lastName);
-            user.setImage(image);
             user.setPassword(password);
             user.setPassword2(password2);
             user.setPhone(phone);
             user.setRol(rol);
-            
+
+            Integer IdImagen = null;
+
+            if (user.getImage() != null) {
+                IdImagen = user.getImage().getId();
+            }
+
+            Image image = imageService.actualizarImagen(file, IdImagen);
+            user.setImage(image);
             userRepository.save(user);
         }
     }
 
-    public void validar(String name, String lastName, String email, Image image, String password, String password2, String phone, Rol rol) throws MyException, ValidationException{
-        
+    public void validar(String name, String lastName, String email, Image image, String password, String password2, String phone, Rol rol) throws MyException, ValidationException {
+
         User usuarioExistente = userRepository.findByEmail(email);
         if (usuarioExistente != null) {
             throw new ValidationException("Ya existe un usuario registrado con ese email");
