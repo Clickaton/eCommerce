@@ -5,7 +5,12 @@
 package com.ventas.eCommerce.Services;
 
 import com.ventas.eCommerce.entities.Cart;
+import com.ventas.eCommerce.entities.Product;
 import com.ventas.eCommerce.repositories.CartRepository;
+import com.ventas.eCommerce.repositories.ProductRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +21,45 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CartService {
-    
+
     @Autowired
     private CartRepository cartRepository;
-    
+
+    @Autowired
+    private ProductRepository productRepository;
+
     @Transactional
-    public void AddProductToCart(){
-    
-        Cart cart = new Cart();
-        
+    public Cart getOrCreateCart() {
+        // Buscar el carrito existente
+        List<Cart> carts = cartRepository.findAll();
+
+        if (!carts.isEmpty()) {
+            // Si hay al menos un carrito, devuelve el primero (puedes personalizar esta lógica según tus requerimientos)
+            return carts.get(0);
+        } else {
+            // Si no hay carritos existentes, crea uno nuevo
+            Cart newCart = new Cart();
+            cartRepository.save(newCart);
+            return newCart;
+        }
+    }
+
+    @Transactional
+    public void AddProductToCart(Integer id) {
+        // Buscar el producto por su ID
+        Optional<Product> productOptional = productRepository.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+
+            // Recuperar el carrito existente o crear uno nuevo
+            Cart cart = getOrCreateCart();
+
+            // Agregar el producto al carrito
+            cart.getProducts().add(product);
+
+            // Guardar el carrito actualizado
+            cartRepository.save(cart);
+        }
     }
 }

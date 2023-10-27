@@ -33,3 +33,7 @@
   justify-content: center; /* Centrado horizontal */
   align-items: center; /* Centrado vertical */
 }
+
+.fondo-personalizado {
+  background-color: #1c0d82;
+}
