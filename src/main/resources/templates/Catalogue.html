@@ -40,8 +40,7 @@
                             <small th:text="'.' + ${product.price - #numbers.integer(${product.price}) * 100}"></small>
                         </h2>
                         <!-- Agregar al carrito -->
-                        <a th:href="@{/cart/addProduct(id=${product.id})}" class="buy">Agregar al carrito</a>
-
+                        <a th:href="@{/cart/addProduct/__${product.id}__}" class="buy">Agregar al carrito</a>
                     </div>
                 </div>
             </div>

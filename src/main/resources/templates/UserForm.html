@@ -21,8 +21,15 @@
 
     <div th:replace="fragments/error :: mensajeError"></div>
 
+    <div class="title">
+        <div class="px-4 py-5 my-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/resources/images/logo user.png" alt="" width="72" height="72">
+            <h3 class="display-6 fw-bold">Registro de usuario</h3>
+        </div>
+    </div>
+
     <div class="content-form">
-        <form class="form" action="/registed" method="post" enctype="multipart/form-data">
+        <form class="form" action="/user/registed" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name">

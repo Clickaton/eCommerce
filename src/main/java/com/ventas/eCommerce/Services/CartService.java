@@ -39,6 +39,7 @@ public class CartService {
         } else {
             // Si no hay carritos existentes, crea uno nuevo
             Cart newCart = new Cart();
+            System.out.println("Entre a la creación01");
             cartRepository.save(newCart);
             return newCart;
         }
@@ -51,7 +52,7 @@ public class CartService {
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
-
+            System.out.println("Hola soy un ");
             // Recuperar el carrito existente o crear uno nuevo
             Cart cart = getOrCreateCart();
 

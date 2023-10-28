@@ -27,7 +27,9 @@ public class CartController {
 
     @GetMapping("/addProduct/{id}")
     public String AddToCart(@PathVariable Integer id) {
+        System.out.println("error1");
         cartService.AddProductToCart(id);
+        System.out.println("error2");
         return "redirect:/product/catalogue"; // Redirige a la página de catálogo después de agregar el producto al carrito
     }
 }

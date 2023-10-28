@@ -27,11 +27,6 @@ public class HomeController {
         return "index.html";
     }
     
-    @GetMapping("/register")
-    public String register(){
-        
-        return "UserForm.html";
-    }
     
 //    @PostMapping("/registed")
 //    public String registed(@RequestParam(required = false)  String name, String lastName, MultipartFile file, String password, String password2, String phone, Rol rol|12, ModelMap model) {

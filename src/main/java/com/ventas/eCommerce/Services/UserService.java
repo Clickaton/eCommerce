@@ -33,18 +33,18 @@ public class UserService {
     private ImageService imageService;
 
     @Transactional
-    public void Register(String name, String lastName, MultipartFile file, String password, String password2, String phone, Rol rol) throws MyException {
+    public void Register(String name, String lastName, MultipartFile file, String email, String password, String password2, String phone, Rol rol) throws MyException {
         User user = new User();
 
         user.setName(name);
         user.setLastName(lastName);
         Image image = imageService.guardarImagen(file);
         user.setImage(image);
+        user.setEmail(email);
         user.setPassword(password);
         user.setPassword2(password2);
         user.setPhone(phone);
         user.setRol(rol);
-
         userRepository.save(user);
 
     }
