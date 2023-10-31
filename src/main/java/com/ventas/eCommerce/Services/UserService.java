@@ -9,6 +9,7 @@ import com.ventas.eCommerce.entities.Image;
 import com.ventas.eCommerce.entities.User;
 import com.ventas.eCommerce.enums.Rol;
 import com.ventas.eCommerce.exceptions.MyException;
+import com.ventas.eCommerce.repositories.CartRepository;
 import com.ventas.eCommerce.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +29,24 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private ImageService imageService;
+    
+     @Autowired
+    private CartService cartService;
 
     @Transactional
     public void Register(String name, String lastName, MultipartFile file, String email, String password, String password2, String phone, Rol rol) throws MyException {
+        validar(name, lastName, email, password, password2, phone, rol);
         User user = new User();
 
+        Cart cart = new Cart();
+        cartRepository.save(cart);
+        
         user.setName(name);
         user.setLastName(lastName);
         Image image = imageService.guardarImagen(file);
@@ -45,6 +56,7 @@ public class UserService {
         user.setPassword2(password2);
         user.setPhone(phone);
         user.setRol(rol);
+        user.setCart(cart);
         userRepository.save(user);
 
     }
@@ -65,6 +77,7 @@ public class UserService {
         if (respuesta.isPresent()) {
             User user = respuesta.get();
             user.setName(name);
+            user.setLastName(lastName);
             user.setEmail(email);
             user.setLastName(lastName);
             user.setPassword(password);
@@ -84,28 +97,29 @@ public class UserService {
         }
     }
 
-    public void validar(String name, String lastName, String email, Image image, String password, String password2, String phone, Rol rol) throws MyException, ValidationException {
+    public void validar(String name, String lastName, String email, String password, String password2, String phone, Rol rol) throws MyException{
 
         User usuarioExistente = userRepository.findByEmail(email);
         if (usuarioExistente != null) {
-            throw new ValidationException("Ya existe un usuario registrado con ese email");
+            throw new MyException("Ya existe un usuario registrado con ese email");
         }
 
         User usuarioExistente2 = userRepository.findByPhone(phone);
         if (usuarioExistente2 != null) {
-            throw new ValidationException("Ya existe un usuario con ese número de teléfono");
+            throw new MyException("Ya existe un usuario con ese número de teléfono");
         }
         if (name.isEmpty() || name == null) {
             throw new MyException("El Nombre no puede ser nulo o estar vacio");
         }
-        if (lastName.isEmpty() || lastName == null) {
+        if (lastName == null) {
             throw new MyException("El Apellido no puede ser nulo o estar vacio");
+        } else {
         }
         if (email.isEmpty() || email == null) {
-            throw new MyException("El email no puede ser nulo o estar vacio");
+            throw new MyException("El email es no puede ser nulo o estar vacio");
         }
-        if (!email.contains(".com") || !email.contains("@")) {
-            throw new MyException("El email debe contener @ y .com");
+        if (!email.contains(".") || !email.contains("@")) {
+            throw new MyException("El email es incorrecto, por favor verificarlo");
         }
         if (phone.isEmpty() || phone == null || phone.length() < 10) {
             throw new MyException("El Telefono no puede estar vacio y debe tener 10 numeros incluyendo el codigo de area");

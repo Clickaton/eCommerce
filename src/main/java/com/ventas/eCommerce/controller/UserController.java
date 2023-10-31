@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -36,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/registed")
-    public String registro_usuario(@RequestParam(required = false)String name, String lastName, MultipartFile file, String email, String password, String password2, String phone, String rol, ModelMap model){
+    public String registro_usuario(@RequestParam(required = false)String name, @RequestParam(required = false) String lastName, MultipartFile file, String email, String password, String password2, String phone, String rol, ModelMap model) throws MyException{
         System.out.println("error1");
         try {
             System.out.println("error2");
