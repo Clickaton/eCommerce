@@ -17,6 +17,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,8 +53,7 @@ public class UserService {
         Image image = imageService.guardarImagen(file);
         user.setImage(image);
         user.setEmail(email);
-        user.setPassword(password);
-        user.setPassword2(password2);
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
         user.setPhone(phone);
         user.setRol(rol);
         user.setCart(cart);
@@ -81,7 +81,6 @@ public class UserService {
             user.setEmail(email);
             user.setLastName(lastName);
             user.setPassword(password);
-            user.setPassword2(password2);
             user.setPhone(phone);
             user.setRol(rol);
 
@@ -132,4 +131,6 @@ public class UserService {
         }
 
     }
+    
+    
 }

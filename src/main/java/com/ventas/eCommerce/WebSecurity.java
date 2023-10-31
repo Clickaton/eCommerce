@@ -5,6 +5,7 @@
 package com.ventas.eCommerce;
 
 
+import com.ventas.eCommerce.Services.CustomUserDetailsService;
 import com.ventas.eCommerce.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +32,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     public UserService userService;
     
     @Autowired
+    public CustomUserDetailsService customUserDS;
+    
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)throws Exception{
-        auth.userDetailsService((username) -> null)
-                .passwordEncoder(new BCryptPasswordEncoder());
-            
+       auth.userDetailsService(customUserDS).passwordEncoder(new BCryptPasswordEncoder());
     }
  
 @Override

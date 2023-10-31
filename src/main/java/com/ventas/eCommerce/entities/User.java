@@ -41,7 +41,6 @@ public class User {
     private Image image;
     private String email;
     private String password;
-    private String password2;
     private String phone;
     @Enumerated(EnumType.STRING)
     private Rol rol;
