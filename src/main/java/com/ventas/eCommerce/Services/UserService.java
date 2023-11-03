@@ -14,11 +14,19 @@ import com.ventas.eCommerce.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import javax.xml.bind.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -26,18 +34,18 @@ import org.springframework.web.multipart.MultipartFile;
  * @author chris
  */
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private CartRepository cartRepository;
 
     @Autowired
     private ImageService imageService;
-    
-     @Autowired
+
+    @Autowired
     private CartService cartService;
 
     @Transactional
@@ -47,7 +55,7 @@ public class UserService {
 
         Cart cart = new Cart();
         cartRepository.save(cart);
-        
+
         user.setName(name);
         user.setLastName(lastName);
         Image image = imageService.guardarImagen(file);
@@ -96,7 +104,11 @@ public class UserService {
         }
     }
 
-    public void validar(String name, String lastName, String email, String password, String password2, String phone, Rol rol) throws MyException{
+    public User getOne(Integer id) {
+        return userRepository.getOne(id);
+    }
+
+    public void validar(String name, String lastName, String email, String password, String password2, String phone, Rol rol) throws MyException {
 
         User usuarioExistente = userRepository.findByEmail(email);
         if (usuarioExistente != null) {
@@ -131,6 +143,23 @@ public class UserService {
         }
 
     }
-    
-    
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user != null) {
+            List<GrantedAuthority> permisos = new ArrayList();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + user.getRol().toString());
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            HttpSession session = attr.getRequest().getSession(true);
+            session.setAttribute("usuariosession", user);
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), permisos);
+        } else {
+            return null;
+        }
+    }
 }

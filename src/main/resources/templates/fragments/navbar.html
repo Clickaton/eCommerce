@@ -20,8 +20,25 @@
                 </form>
 
                 <div class="text-end">
-                    <a type="button" class="btn btn-outline-light me-2">Ingresar</a>
-                    <a type="button" href="/user/register" class="btn btn-outline-light me-2">Registrarse</a>
+                    <a type="button" th:if="${session.usuariosession == null}" href="/user/login"
+                        class="btn btn-outline-light me-2">Ingresar</a>
+                    <a type="button" th:if="${session.usuariosession == null}" href="/user/register"
+                        class="btn btn-outline-light me-2">Registrarse</a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" th:if="${session.usuariosession != null}" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Perfil <img href=" /registrar" th:src="@{/imagen/perfil/__${session.usuariosession.id}__}"
+                                alt="" class="img-limitada">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/perfil}">Editar perfil</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

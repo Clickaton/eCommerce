@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 110vh;
+  margin-top: 12rem;
 }
 
 .error {
@@ -38,9 +38,10 @@
   background-color: #1c0d82;
 }
 
-.form {
-  margin-top: -24rem;
-}
 .title {
-  margin-top: -2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  margin-bottom: -8rem;
 }

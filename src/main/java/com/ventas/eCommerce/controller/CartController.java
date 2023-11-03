@@ -6,6 +6,8 @@ package com.ventas.eCommerce.controller;
 
 import com.ventas.eCommerce.Services.CartService;
 import com.ventas.eCommerce.entities.Cart;
+import com.ventas.eCommerce.entities.User;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +28,10 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/addProduct/{id}")
-    public String AddToCart(@PathVariable Integer id) {
-        System.out.println("error1");
-        cartService.AddProductToCart(id);
-        System.out.println("error2");
+    public String AddToCart(@PathVariable Integer id, HttpSession session) {
+        User logueado=(User) session.getAttribute("usuariosession");
+        Integer idUsuario = logueado.getId();
+        cartService.AddProductToCart(id, logueado);
         return "redirect:/product/catalogue"; // Redirige a la página de catálogo después de agregar el producto al carrito
     }
 }

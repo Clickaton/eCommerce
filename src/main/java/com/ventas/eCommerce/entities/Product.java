@@ -43,5 +43,7 @@ public class Product {
     private Category category;
     private Boolean creationDeletion;
     private Integer stock;
+    //@OneToMany(MappedBy="Cart")
+    //private Cart cart;
 
 }

@@ -5,7 +5,10 @@
 package com.ventas.eCommerce.controller;
 
 import com.ventas.eCommerce.Services.ProductService;
+import com.ventas.eCommerce.Services.UserService;
 import com.ventas.eCommerce.entities.Product;
+import com.ventas.eCommerce.entities.User;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +30,9 @@ public class ImageController {
     @Autowired
     ProductService productService;
     
+    @Autowired
+    UserService userService;
+    
     @GetMapping("/products/{id}")
     public ResponseEntity<byte[]> productImage (@PathVariable Integer id){
         Product product = productService.getOne(id);
@@ -38,6 +44,20 @@ public class ImageController {
        headers.setContentType(MediaType.IMAGE_JPEG);
        
        return new ResponseEntity<>(image,headers,HttpStatus.OK);
+    }
+    
+        @GetMapping("/perfil/{id}")
+    public ResponseEntity<byte[]> imagenUsuario (@PathVariable Integer id, HttpSession session ){
+        User user = userService.getOne(id);
+       
+       byte[] image = user.getImage().getContent();
+       
+       HttpHeaders headers = new HttpHeaders();
+       
+       headers.setContentType(MediaType.IMAGE_JPEG);
+       
+       return new ResponseEntity<>(image, headers, HttpStatus.OK);
+       
     }
     
 }

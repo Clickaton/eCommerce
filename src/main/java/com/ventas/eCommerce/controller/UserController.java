@@ -50,4 +50,14 @@ public class UserController {
         return "UserForm.html";
     }
 
+    @GetMapping("/login")
+    public String login(@RequestParam(required = false) String error, ModelMap model){
+        
+        if (error != null) {
+            model.put("error", "Usuario o contraseña invalidos!");
+        }
+        
+    return "login.html";
+    }
+
 }

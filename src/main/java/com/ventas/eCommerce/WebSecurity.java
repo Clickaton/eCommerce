@@ -31,12 +31,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     @Autowired
     public UserService userService;
     
-    @Autowired
-    public CustomUserDetailsService customUserDS;
     
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)throws Exception{
-       auth.userDetailsService(customUserDS).passwordEncoder(new BCryptPasswordEncoder());
+       auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
  
 @Override
@@ -47,7 +45,7 @@ protected void configure (HttpSecurity http) throws Exception{
                 .antMatchers("/css/*", "/js/*", "/img/*", "/**")
                 .permitAll()
             .and().formLogin()
-                .loginPage("/login")
+                .loginPage("/user/login")
                 .loginProcessingUrl("/logincheck")
                 .usernameParameter("email")
                 .passwordParameter("password")

@@ -6,11 +6,15 @@ package com.ventas.eCommerce.Services;
 
 import com.ventas.eCommerce.entities.Cart;
 import com.ventas.eCommerce.entities.Product;
+import com.ventas.eCommerce.entities.User;
 import com.ventas.eCommerce.repositories.CartRepository;
 import com.ventas.eCommerce.repositories.ProductRepository;
+import com.ventas.eCommerce.repositories.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,39 +32,35 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Transactional
-    public Cart getOrCreateCart() {
-        // Buscar el carrito existente
-        List<Cart> carts = cartRepository.findAll();
-
-        if (!carts.isEmpty()) {
-            // Si hay al menos un carrito, devuelve el primero (puedes personalizar esta lógica según tus requerimientos)
-            return carts.get(0);
-        } else {
-            // Si no hay carritos existentes, crea uno nuevo
-            Cart newCart = new Cart();
-            System.out.println("Entre a la creación01");
-            cartRepository.save(newCart);
-            return newCart;
-        }
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
-    public void AddProductToCart(Integer id) {
+    public void AddProductToCart(Integer idProduct, User usuario) {
         // Buscar el producto por su ID
-        Optional<Product> productOptional = productRepository.findById(id);
+        Optional<Product> productOptional = productRepository.findById(idProduct);
+
+        Cart cart = usuario.getCart();
+
+        // Verificar si el carrito ya tiene una lista de productos
+        List<Product> products = cart.getProducts();
+
+        if (products == null) {
+            // Si la lista no existe, créala
+            products = new ArrayList<>();
+        }
 
         if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            System.out.println("Hola soy un ");
-            // Recuperar el carrito existente o crear uno nuevo
-            Cart cart = getOrCreateCart();
+            // Agregar el producto a la lista
+            products.add(productOptional.get());
 
-            // Agregar el producto al carrito
-            cart.getProducts().add(product);
+            // Actualizar la lista de productos en el carrito
+            cart.setProducts(products);
 
             // Guardar el carrito actualizado
             cartRepository.save(cart);
+        } else {
+            System.out.println("No se ha cargado ningún producto");
         }
     }
 }

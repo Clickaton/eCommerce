@@ -4,7 +4,9 @@
  */
 package com.ventas.eCommerce.controller;
 
+import com.ventas.eCommerce.entities.User;
 import com.ventas.eCommerce.enums.Rol;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,17 @@ public class HomeController {
     
         return "index.html";
     }
-    
+
+    @GetMapping("/inicio")
+    public String inicio(HttpSession session){
+        User userLogged = (User) session.getAttribute("usuariosession");
+        
+        if (userLogged.getRol().toString().equals("ADMIN")) {
+            return "redirect:/admin/dashboard";
+        }
+        
+        return "inicio.html";
+    }
     
 //    @PostMapping("/registed")
 //    public String registed(@RequestParam(required = false)  String name, String lastName, MultipartFile file, String password, String password2, String phone, Rol rol|12, ModelMap model) {
