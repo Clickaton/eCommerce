@@ -1,0 +1,141 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  background-image: url(/img/fondodash2.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-attachment: fixed;
+  padding-bottom: 100px;
+}
+
+h3 {
+  align-content: center;
+  color: aliceblue;
+  text-shadow: 10px;
+  text-align: center;
+}
+
+a {
+  color: black;
+}
+
+/* contenedor de todo Side - form - tabla  */
+.main-container {
+  flex-direction: row;
+  align-items: flex-start;
+  padding-left: 300px; /* Ancho del sidebar más margen */
+}
+
+/* Contenedor del Formulario  */
+.container1 {
+  background-color: aliceblue;
+  opacity: 0.8;
+  padding-left: 25px;
+  padding-bottom: 20px;
+  padding-top: 60px;
+  width: 80%;
+  text-align: left;
+  border-radius: 10px;
+}
+/* Contenedor de los dashboard  */
+.containerDash {
+  background-color: rgb(157, 187, 213);
+  opacity: 0.8;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  padding-top: 60px;
+  width: 95%;
+  text-align: left;
+  border-radius: 10px;
+}
+.listaDash {
+  padding-left: 1px;
+  padding-bottom: 1px;
+  width: 80%;
+}
+
+.miboton {
+  width: 96%;
+}
+
+.hed {
+  display: flex;
+  gap: 45px;
+  align-items: end;
+}
+
+.sidebar1 {
+  background-color: transparent;
+  color: #fff;
+  width: 300px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 250px;
+}
+/* ===RESPONSIVE DEL SIDEBAR==== */
+@media (max-width: 768px) {
+  /* Cambios de estilo cuando la pantalla es más pequeña, por ejemplo, 
+    en dispositivos móviles */
+  .sidebar1 {
+    width: 100%; /* Ocupar todo el ancho en pantallas pequeñas */
+    position: static; /* Volver a la posición estática en pantallas pequeñas */
+  }
+  .main-container {
+    margin-left: 0; /* Eliminar margen izquierdo en pantallas pequeñas */
+  }
+}
+
+/* Animacion Del Formulario */
+#scale-up-top-right {
+  animation: scale-up-top-right 0.4s;
+}
+@keyframes scale-up-top-right {
+  0% {
+    transform: scale(0.5);
+    transform-origin: top right;
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: top right;
+  }
+}
+/* -------------------------- */
+
+/* ====Tabla con Usuarios=== */
+.listaADM1 {
+  background-color: aliceblue;
+  opacity: 0.8;
+  margin-top: 45px;
+  width: 80%;
+  align-items: center;
+  border-radius: 10px;
+  margin-left: 300px;
+}
+
+.textoadm {
+  padding: 25px;
+  background-color: aliceblue;
+  opacity: 0.8;
+  border-radius: 20px;
+}
+
+/* Animacion Imagen Perfil Dashs */
+#rotate-scale-up-vertical {
+  animation: rotate-scale-up-vertical 0.5s linear both;
+}
+@keyframes rotate-scale-up-vertical {
+  0% {
+    transform: scale(1) rotateY(0);
+  }
+  50% {
+    transform: scale(2) rotateY(180deg);
+  }
+  100% {
+    transform: scale(1) rotateY(360deg);
+  }
+}

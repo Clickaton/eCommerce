@@ -53,7 +53,7 @@ protected void configure (HttpSecurity http) throws Exception{
                 .permitAll()
             .and().logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/user/login")
                 .permitAll()
             .and().csrf()
                 .disable();

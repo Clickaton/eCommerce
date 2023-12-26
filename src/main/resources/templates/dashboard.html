@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
         integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="/css/nav.css">
+    <link rel="stylesheet" type="text/css" href="/css/dashboard.css">
 </head>
 
 <body>
@@ -21,172 +22,154 @@
 
     <div th:replace="fragments/error :: mensajeError"></div>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 300px;">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <svg class="bi pe-none me-2" width="40" height="32">
-                <use xlink:href="#bootstrap" />
-            </svg>
-            <span class="fs-4">Menú</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto">
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#home" />
-                    </svg>
-                    Home
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2" />
-                    </svg>
-                    Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2" />
-                    </svg>
-                    Perfil
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2" />
-                    </svg>
-                    Crear Medico
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2" />
-                    </svg>
-                    Crear Paciente
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#table" />
-                    </svg>
-                    Lista Usuarios
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#grid" />
-                    </svg>
-                    Lista Profesionales
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle" />
-                    </svg>
-                    Turnos
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle" />
-                    </svg>
-                    Modificar Horarios
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle" />
-                    </svg>
-                    Turnos Disponibles
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-body-emphasis">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle" />
-                    </svg>
-                    Otra Opcion
-                </a>
-            </li>
-        </ul>
-        <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                <strong>mdo</strong>
+    <aside class="sidebar1">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 300px;" id="dashboard">
+            <a href="/"
+                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <svg class="bi pe-none me-2" width="40" height="32">
+                    <use xlink:href="#bootstrap" />
+                </svg>
+                <span class="fs-4">Menú</span>
             </a>
-            <ul class="dropdown-menu text-small shadow">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li>
-                    <hr class="dropdown-divider">
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#home" />
+                        </svg>
+                        Home
+                    </a>
                 </li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#speedometer2" />
+                        </svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#speedometer2" />
+                        </svg>
+                        Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#speedometer2" />
+                        </svg>
+                        Crear Medico
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#speedometer2" />
+                        </svg>
+                        Crear Paciente
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#table" />
+                        </svg>
+                        Lista Usuarios
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#grid" />
+                        </svg>
+                        Lista Profesionales
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#people-circle" />
+                        </svg>
+                        Turnos
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#people-circle" />
+                        </svg>
+                        Modificar Horarios
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#people-circle" />
+                        </svg>
+                        Turnos Disponibles
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link link-body-emphasis">
+                        <svg class="bi pe-none me-2" width="16" height="16">
+                            <use xlink:href="#people-circle" />
+                        </svg>
+                        Otra Opcion
+                    </a>
+                </li>
             </ul>
+            <hr>
         </div>
-    </div>
+    </aside>
 
-    <div class="title">
-        <img class="formLogo" src="/resources/images/logo user.png" alt="" width="72" height="72"> &nbsp;&nbsp;
-        <h3 class="display-6 fw-bold">Registro de usuario</h3>
-    </div>
+    <center>
+        <section class="paneladm">
+            <h1 class="visually-hidden">Panel Administrativo</h1>
 
-    <div class="content-form">
-        <form class="form" action="/user/registed" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" name="name">
-                <div id="emailHelp" class="form-text">Ingrese su nombre </div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="lastName" aria-describedby="emailHelp" name="lastName">
-                <div id="emailHelp" class="form-text">Ingrese su apellido</div>
-            </div>
-            <div class="mb-3">
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="email" placeholder="EMAIL" th:value="email">
-            </div>
-            <div id="emailHelp" class="form-text">Ingrese un correo electronico válido</div>
+            <div class="px-4 py-5 my-5 text-center">
+                <!-- <img class="d-block mx-auto mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+                <div th:if="${#strings.equals(#strings.trim(session.usuariosession.rol), 'USER')}">
+                    <img th:src="@{/image/perfil/__${session.usuariosession.id}__}" id="rotate-scale-up-vertical"
+                        alt="mdo" width="160" height="160" class="rounded-circle">
+                </div>
 
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Imagen</label>
-                <input type="file" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="file">
-                <div id="emailHelp" class="form-text">Seleccione una imagen de perfil</div>
+                <div th:if="${#strings.equals(#strings.trim(session.usuariosession.rol), 'ADMIN')}">
+                    <img th:src="@{/image/perfil/__${session.usuariosession.id}__}" id="rotate-scale-up-vertical"
+                        alt="mdo" width="160" height="160" class="rounded-circle">
+                </div>
+
+                <h1 class="display-5 fw-bold text-body-emphasis"
+                    th:text="'Bienvenido ' + ${session.usuariosession.name}"></h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4 textoadm">¡Bienvenido al Panel Administrativo!
+                        Aquí, en el sidebar izquierdo, tienes acceso a todas las acciones clave de la página: crear,
+                        modificar, listar y explorar. Nuestra interfaz es fácil de usar,
+                        y nuestro equipo de soporte está listo para ayudarte en cualquier momento. ¡Disfruta de
+                        todas
+                        las herramientas que necesitas para una experiencia excepcional!
+                    </p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="/admin/listaProfesionales"> <button type="button"
+                                class="btn btn-primary btn-lg px-4 gap-3">Profesionales</button></a>
+                        <a href="/admin/listaUsuarios"><button type="button"
+                                class="btn btn-success btn-lg px-4">Pacientes</button></a>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="exampleInputPassword1" name="password"
-                    placeholder="INGRESE LA CONTRASEÑA" th:value="${password}">
-                <div id="emailHelp" class="form-text">Ingrese su contraseña</div>
+        </section>
+    </center>
+    <section class=" text-center container">
+        <div class="row mt-3">
+            <div class="divVolver">
+                <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>
             </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="exampleInputPassword1" name="password2"
-                    placeholder="REPETIR CONTRASEÑA" th:value="${password2}">
-                <div id="emailHelp" class="form-text">Ingrese su contraseña nuevamente.</div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Número de contacto</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    name="phone">
-                <div id="emailHelp" class="form-text">Ingrese su número telefónico de contacto</div>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a href="/" class="btn btn-primary">volver</a>
-    </div>
-    </form>
-    </div>
+        </div>
+    </section>
+
+
 
 </body>
