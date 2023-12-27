@@ -13,7 +13,9 @@
   border-radius: 10%;
 }
 
-.paneladm {
+.img-limitada {
+  border-radius: 50%;
+  max-width: 30px;
 }
 
 .form {
