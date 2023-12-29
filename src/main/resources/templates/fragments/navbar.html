@@ -37,6 +37,11 @@
                             <li>
                                 <a class="dropdown-item" th:href="@{/perfil}">Editar perfil</a>
                             </li>
+                            <li>
+                                <a class="dropdown-item" th:if="${session.usuariosession != null}"
+                                    th:href="@{/cart/myCart/__${session.usuariosession.id}__}">Ver
+                                    carrito </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

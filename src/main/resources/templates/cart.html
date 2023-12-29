@@ -22,29 +22,49 @@
     <div th:replace="fragments/error :: mensajeError"></div>
 
     <div class="content-form">
+
+        <div th:replace="fragments/error :: mensajeError"></div>
+
+        <div class="title">
+            <img class="formLogo" src="/resources/images/logo user.png" alt="" width="72" height="72"> &nbsp;&nbsp;
+            <h3 class="display-6 fw-bold">Carrito de compras</h3>
+        </div>
+
+
+
         <form class="form" action="/user/registed" method="post" enctype="multipart/form-data">
-            <div class="card-box" th:each="product : ${products}">
-                <div class="card-body">
-                    <div class="cardp">
-                        <div class="card-headphone">
-                            <!-- Utiliza th:src para obtener la URL de la imagen del producto -->
-                            <img th:src="@{/image/products/__${product.id}__}" alt="headphone">
-                        </div>
-                        <div class="card-infos">
-                            <!-- Muestra el nombre del producto -->
-                            <h3 class="card-title" th:text="${product.name}">Nombre del Producto</h3>
-                            <!-- Muestra el precio del producto -->
-                            <h2 class="price" th:text="'$' + ${product.price}">
-                                <!-- Puedes mostrar centavos si es necesario -->
-                                <small
-                                    th:text="'.' + ${product.price - #numbers.integer(${product.price}) * 100}"></small>
-                            </h2>
-                            <!-- Agregar al carrito -->
-                            <a class="buy">Elija la cantidad de artículos</a>
-                        </div>
-                    </div>
-                </div>
+
+
+            <div class="tabla">
+                <table id="tablita" class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Imagen</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="product : ${listaCarrito}">
+                        <tr>
+                            <th th:text="${product.name}"></th>
+                            <td th:text="@{/image/products/__${product.id}__}"></td>
+                            <th th:text="${product.description}"></th>
+                            <td th:text="${product.price}"></td>
+                            <td th:text="${product.name}"></td>
+                            <td>
+                                <a><i class="bi bi-pencil-square"></i>
+                                    modificar </a>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
+
 
             <button type="submit" class="btn btn-primary">Confirmar compra</button>
             <a href="/product/catalogue" class="btn btn-primary">volver</a>

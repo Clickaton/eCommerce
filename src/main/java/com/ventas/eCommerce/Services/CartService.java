@@ -63,4 +63,20 @@ public class CartService {
             System.out.println("No se ha cargado ningún producto");
         }
     }
+
+    public List<Product> getProductosEnCarrito(Integer userId) {
+        // Buscar el carrito por el ID del usuario
+        Cart cart = cartRepository.findCartById(userId);
+
+        // Verificar si el carrito tiene una lista de productos
+        List<Product> products = cart.getProducts();
+
+
+        if (products != null) {
+            return products;
+        } else {
+            return new ArrayList<>(); // Devolver una lista vacía si no hay productos
+        }
+    }
 }
+
