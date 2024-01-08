@@ -39,19 +39,24 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Cantidad</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody th:each="product : ${listaCarrito}">
                         <tr>
                             <th th:text="${product.name}"></th>
-                            <td th:text="@{/image/products/__${product.id}__}"></td>
+                            <td>
+                                <a><img th:src="@{/image/products/__${product.id}__}" width="150" height="100"
+                                        alt="headphone"></a>
+                            </td>
                             <th th:text="${product.description}"></th>
                             <td th:text="${product.price}"></td>
                             <td th:text="${product.name}"></td>
                             <td>
-                                <a><i class="bi bi-pencil-square"></i>
-                                    modificar </a>
+                                <a id="cesto" th:href="@{/cart/delete/__${product.id}__}"><i class="bi bi-trash"></i>
+                                    Eliminar
+                                </a>
+
                             </td>
 
                         </tr>

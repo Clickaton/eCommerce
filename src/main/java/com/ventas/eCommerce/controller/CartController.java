@@ -52,4 +52,36 @@ public class CartController {
 
         return "cart.html";
     }
+
+    @GetMapping("/delete/{productId}")
+    public String deleteProductFromCart(@PathVariable Integer productId, HttpSession session) {
+        User user = (User) session.getAttribute("usuariosession");
+        Integer userId = user.getId();
+
+        // Llamar al servicio para eliminar el producto del carrito
+        cartService.deleteProductFromCart(productId, userId);
+
+        // Redirigir a la página del carrito o a donde desees
+        return "redirect:/cart/myCart{userId}";
+    }
+
+
+/*
+    @GetMapping("/eliminar/{id}")
+    public String delete(@PathVariable Integer id, HttpSession session, ModelMap model) {
+        try {
+            serviciosLibro.eliminarLibro(isbn);
+            modelo.put("exito", "El libro fue eliminado correctamente");
+        } catch (MiException ex) {
+            Logger.getLogger(LibroControlador.class.getName()).log(Level.SEVERE, null, ex);
+            List<Autor> autores = serviciosAutor.listarAutores();
+            List<Editorial> editoriales = serviciosEditorial.listarEditorial();
+            modelo.addAttribute("autores", autores);
+            modelo.addAttribute("editoriales", editoriales);
+            modelo.put("error", ex.getMessage());
+        }
+        return "redirect:/libro/lista"; // Redirigir a la lista de libros después de la eliminación
+    }
+*/
+
 }

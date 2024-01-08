@@ -78,5 +78,29 @@ public class CartService {
             return new ArrayList<>(); // Devolver una lista vacía si no hay productos
         }
     }
+
+    @Transactional
+    public void deleteProductFromCart(Integer productId, Integer userId) {
+        // Buscar el carrito por el ID del usuario
+        Cart cart = cartRepository.findCartById(userId);
+
+        // Verificar si el carrito tiene una lista de productos
+        List<Product> products = cart.getProducts();
+
+        // Encontrar el producto por su ID
+        Optional<Product> productOptional = products.stream()
+                .filter(product -> product.getId().equals(productId))
+                .findFirst();
+
+        // Verificar si el producto está presente y eliminarlo de la lista
+        productOptional.ifPresent(product -> products.remove(product));
+
+        // Actualizar la lista de productos en el carrito
+        cart.setProducts(products);
+
+        // Guardar el carrito actualizado
+        cartRepository.save(cart);
+    }
+
 }
 
