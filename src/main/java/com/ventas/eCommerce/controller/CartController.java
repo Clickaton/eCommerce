@@ -63,8 +63,8 @@ public class CartController {
         // Llamar al servicio para eliminar el producto del carrito
         cartService.deleteProductFromCart(productId, userId);
 
-        // Redirigir a la página del carrito o a donde desees
-        return "redirect:/cart/myCart{userId}";
+        // Redirigir a la página del carrito con el userId en la URL
+        return "redirect:/cart/myCart/" + userId;
     }
 
 
