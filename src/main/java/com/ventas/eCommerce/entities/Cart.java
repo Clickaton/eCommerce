@@ -4,16 +4,19 @@
  */
 package com.ventas.eCommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -21,14 +24,15 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Getter @Setter
+@Entity
+@Getter
+@Setter
 public class Cart {
-    
-   @Id
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne
-    private Product product;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cart_id") // Nombre de la columna que hace referencia al carrito en la tabla de productos
+    private List<Product> products;
 }
-    
-    

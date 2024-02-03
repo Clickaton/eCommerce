@@ -4,10 +4,14 @@
  */
 package com.ventas.eCommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +32,12 @@ public class Transaction {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private LocalDateTime localDateTime;
+    private String dni;
+    private String cardNumber;
+    private LocalDate expirationDate;
+    @OneToOne
+    private Cart cart;
+    private String addres;
 
 }

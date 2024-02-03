@@ -1,0 +1,52 @@
+body {
+  background-color: burlywood;
+  background-position: 0px 50px;
+  background-size: 100%;
+  background-attachment: fixed;
+  margin-top: 50px;
+}
+
+#form {
+  position: relative;
+  width: 250px;
+  height: 50px;
+  margin: 0;
+}
+
+#form p {
+  text-align: center;
+}
+
+#form label {
+  font-size: 20px;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  color: grey;
+}
+
+.clasificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+label:hover,
+label:hover ~ label {
+  color: orange;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+
+.doctores {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+  margin: 100px auto;
+}

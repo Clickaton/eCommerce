@@ -1,0 +1,114 @@
+$primary: #100168;
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+@import url("https://fonts.googlepics.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+$body-first-color: #212121;
+$body-second-color: #191919;
+$card-color: #ffce00;
+$text-first-color-card: rgba(0, 0, 0, 0.1);
+$text-second-color-card: #ffce00;
+
+.card-box {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10vh;
+}
+
+.cardp {
+  position: relative;
+  width: 320px;
+  height: 420px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 3px 5px 5px rgba(3, 32, 51, 0.062);
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    width: 100%;
+    height: 100%;
+    background: #100168;
+    transform: skewY(345deg) !important;
+    transition: 0.5s;
+  }
+  &:hover::before {
+    top: -60%;
+    transform: skewY(390deg) !important;
+  }
+  &::after {
+    content: " ANTOGN PARFUM";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-weight: 600;
+    font-size: 2em;
+    color: rgba(0, 0, 0, 0.041);
+  }
+  & .card-headphone {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    z-index: 1;
+    & img {
+      max-width: 100%;
+      transition: 0.5s;
+    }
+  }
+  &:hover {
+    .card-headphone img {
+      max-width: 70%;
+    }
+    .card-infos .buy {
+      top: 10px;
+      opacity: 1;
+    }
+  }
+  & .card-infos {
+    position: relative;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+    & h3 {
+      font-size: 18px;
+      color: #000000;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    & .price {
+      font-size: 24px;
+      color: #000000;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    & .buy {
+      position: relative;
+      top: 200px;
+      opacity: 0;
+      padding: 10px 30px;
+      margin-top: 15px;
+      color: #fff;
+      text-decoration: none;
+      background: #100168;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.5s;
+    }
+  }
+}

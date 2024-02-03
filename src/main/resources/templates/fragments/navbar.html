@@ -1,0 +1,51 @@
+<nav class="fondo-personalizado">
+    <header class="p-3 text-bg-primary">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <img src="/resources/images/logoantogn.png" class="logo">
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                </ul>
+
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                    <input type="search" class="form-control text-bg-light form-control-dark text-bg-primary"
+                        placeholder="Search..." aria-label="Search">
+                </form>
+
+                <div class="text-end">
+                    <a type="button" th:if="${session.usuariosession == null}" href="/user/login"
+                        class="btn btn-outline-light me-2">Ingresar</a>
+                    <a type="button" th:if="${session.usuariosession == null}" href="/user/register"
+                        class="btn btn-outline-light me-2">Registrarse</a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" th:if="${session.usuariosession != null}" href="#"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Perfil <img href=" /registrar" th:src="@{/image/perfil/__${session.usuariosession.id}__}"
+                                alt="user-image" class="img-limitada">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:href="@{/perfil}">Editar perfil</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" th:if="${session.usuariosession != null}"
+                                    th:href="@{/cart/myCart/__${session.usuariosession.id}__}">Ver
+                                    carrito </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</nav>

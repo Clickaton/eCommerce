@@ -1,0 +1,90 @@
+.logo {
+  width: 110px;
+  height: 80px;
+  border-radius: 2em;
+  margin-right: 3em;
+}
+
+.linkCatalogo {
+  color: #fff !important ;
+}
+
+#dashboard {
+  border-radius: 10%;
+}
+
+.img-limitada {
+  border-radius: 50%;
+  max-width: 30px;
+}
+
+.form {
+  padding-top: 50px;
+  width: 65%;
+  background-color: aliceblue;
+  border-radius: 20px;
+  padding: 25px;
+  text-align: left;
+  justify-content: center;
+}
+
+.content-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12rem;
+}
+
+/* ===RESPONSIVE DEL SIDEBAR==== */
+@media (max-width: 768px) {
+  /* Cambios de estilo cuando la pantalla es más pequeña, por ejemplo, 
+  en dispositivos móviles */
+  .sidebar1 {
+    width: 100%; /* Ocupar todo el ancho en pantallas pequeñas */
+    position: static; /* Volver a la posición estática en pantallas pequeñas */
+  }
+  .main-container {
+    margin-left: 0; /* Eliminar margen izquierdo en pantallas pequeñas */
+  }
+}
+
+/* Animacion Imagen Perfil Dashs */
+#rotate-scale-up-vertical {
+  animation: rotate-scale-up-vertical 0.5s linear both;
+}
+@keyframes rotate-scale-up-vertical {
+  0% {
+    transform: scale(1) rotateY(0);
+  }
+  50% {
+    transform: scale(2) rotateY(180deg);
+  }
+  100% {
+    transform: scale(1) rotateY(360deg);
+  }
+}
+
+.textoadm {
+  padding: 25px;
+  background-color: aliceblue;
+  opacity: 0.8;
+  border-radius: 20px;
+}
+
+.error {
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+}
+
+.fondo-personalizado {
+  background-color: #000000;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+  margin-bottom: -8rem;
+}

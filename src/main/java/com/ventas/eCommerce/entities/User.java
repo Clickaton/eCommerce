@@ -4,16 +4,22 @@
  */
 package com.ventas.eCommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+
+import com.ventas.eCommerce.enums.Rol;
+
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -26,17 +32,21 @@ import org.hibernate.annotations.GenericGenerator;
 @Setter
 public class User {
 
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String lastName;
     @OneToOne
     private Image image;
     private String email;
     private String password;
-    private String password2;
-    private String addres;
     private String phone;
-    //private Rol rol; 
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
+    @OneToOne
+    private Cart cart;
+    @OneToMany
+    private List<Transaction> transaction;
 
 }

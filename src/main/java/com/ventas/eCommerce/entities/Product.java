@@ -4,16 +4,20 @@
  */
 package com.ventas.eCommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+
+import com.ventas.eCommerce.enums.Category;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
+
 
 /**
  *
@@ -35,7 +39,11 @@ public class Product {
     private Image image;
     private String brand;
     private Double price;
-    private String category;
-    private Boolean stock;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    private Boolean creationDeletion;
+    private Integer stock;
+    //@OneToMany(MappedBy="Cart")
+    //private Cart cart;
 
 }
