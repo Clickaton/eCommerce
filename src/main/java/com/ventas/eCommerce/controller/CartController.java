@@ -36,9 +36,8 @@ public class CartController {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/addProduct/{id}")
     public String AddToCart(@PathVariable Integer id, HttpSession session) {
-        User logueado=(User) session.getAttribute("usuariosession");
-        Integer idUsuario = logueado.getId();
-        cartService.AddProductToCart(id, logueado);
+        User logueado = (User) session.getAttribute("usuariosession");
+        cartService.AddProductToCart(id, logueado); // Pasar el objeto User completo al servicio
         return "redirect:/product/catalogue"; // Redirige a la página de catálogo después de agregar el producto al carrito
     }
 
@@ -58,15 +57,10 @@ public class CartController {
     @GetMapping("/delete/{productId}")
     public String deleteProductFromCart(@PathVariable Integer productId, HttpSession session) {
         User user = (User) session.getAttribute("usuariosession");
-        Integer userId = user.getId();
-
-        // Llamar al servicio para eliminar el producto del carrito
-        cartService.deleteProductFromCart(productId, userId);
-
+        cartService.deleteProductFromCart(productId, user); // Pasar el objeto User completo al servicio
         // Redirigir a la página del carrito con el userId en la URL
-        return "redirect:/cart/myCart/" + userId;
+        return "redirect:/cart/myCart/" + user.getId();
     }
-
 
 /*
     @GetMapping("/eliminar/{id}")

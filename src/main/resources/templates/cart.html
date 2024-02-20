@@ -51,7 +51,13 @@
                             </td>
                             <th th:text="${product.description}"></th>
                             <td th:text="${product.price}"></td>
-                            <td th:text="${product.name}"></td>
+                            <td>
+                                <div>
+                                    <label for="ticketNum">Cantidad:</label>
+                                    <input id="ticketNum" type="number" name="ticketNum" value="1" min="1"
+                                        onkeydown="return false;">
+                                </div>
+                            </td>
                             <td>
                                 <a id="cesto" th:href="@{/cart/delete/__${product.id}__}"><i class="bi bi-trash"></i>
                                     Eliminar
