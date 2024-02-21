@@ -42,6 +42,9 @@
                         <!-- Agregar al carrito -->
                         <a th:href="@{/cart/addProduct/__${product.id}__}" class="buy">Agregar al carrito</a>
                     </div>
+                    <span>
+                        <h6 th:text="'En Stock: ' + ${product.stock}"></h6>
+                    </span>
                 </div>
             </div>
         </div>

@@ -35,6 +35,7 @@ public class CartService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public void AddProductToCart(Integer idProduct, User usuario) {
         Optional<Product> productOptional = productRepository.findById(idProduct);
 
@@ -43,17 +44,23 @@ public class CartService {
             Cart cart = usuario.getCart();
             List<Product> products = cart.getProducts();
 
-            // Verificar si la lista de productos existe en el carrito
-            if (products == null) {
+            // Verificar si la lista de productos es null o está vacía
+            if (products == null || products.isEmpty()) {
+                // Si la lista es null o está vacía, inicialízala con una nueva lista vacía
                 products = new ArrayList<>();
                 cart.setProducts(products);
             }
 
             // Verificar si el producto ya está en el carrito
-            if (!products.contains(product)) {
+            boolean productAlreadyInCart = products.stream().anyMatch(p -> p.getId().equals(product.getId()));
+
+            if (!productAlreadyInCart) {
+                // Si el producto no está en el carrito, agrégalo
                 products.add(product);
+                // Guardar el carrito actualizado en la base de datos
                 cartRepository.save(cart);
             } else {
+                // Si el producto ya está en el carrito, podrías actualizar la cantidad o simplemente no hacer nada
                 System.out.println("El producto ya está en el carrito.");
             }
         } else {
@@ -61,9 +68,9 @@ public class CartService {
         }
     }
 
-    public List<Product> getProductosEnCarrito(Integer userId) {
+    public List<Product> getProductosEnCarrito(User user) {
         // Buscar el carrito por el ID del usuario
-        Cart cart = cartRepository.findCartById(userId);
+        Cart cart = cartRepository.findCartById(user.getId());
 
         // Verificar si el carrito tiene una lista de productos
         List<Product> products = cart.getProducts();
@@ -80,9 +87,8 @@ public class CartService {
     public void deleteProductFromCart(Integer productId, User user) {
         // Buscar el carrito por el ID del usuario
         Cart cart = cartRepository.findCartById(user.getId());
-
         // Verificar si el carrito tiene una lista de productos
-        List<Product> products = cart.getProducts();
+        List<Product> products = user.getCart().getProducts();
 
         // Encontrar el producto por su ID
         Optional<Product> productOptional = products.stream()
