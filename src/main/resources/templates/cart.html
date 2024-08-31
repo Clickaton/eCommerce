@@ -51,7 +51,8 @@
                             </td>
                             <th th:text="${product.description}"></th>
                             <td th:text="${product.price}"></td>
-                            <td> <input id="number" type="number" value="1" min="1" onkeydown="return false;" /></td>
+                            <td> <input id="number" type="number" value="1" min="1" th:max="${product.stock}"
+                                    onkeydown="return false;" /></td>
                             <td>
                                 <a id="cesto" th:href="@{/cart/delete/__${product.id}__}"><i class="bi bi-trash"></i>
                                     Eliminar
