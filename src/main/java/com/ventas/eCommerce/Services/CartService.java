@@ -40,27 +40,29 @@ public class CartService {
         // Buscar el producto por su ID
         Optional<Product> productOptional = productRepository.findById(idProduct);
 
-        Cart cart = usuario.getCart();
-
-        // Verificar si el carrito ya tiene una lista de productos
-        List<Product> products = cart.getProducts();
-
-        if (products == null) {
-            // Si la lista no existe, créala
-            products = new ArrayList<>();
-        }
-
         if (productOptional.isPresent()) {
-            // Agregar el producto a la lista
-            products.add(productOptional.get());
+            Product product = productOptional.get();
+            Cart cart = usuario.getCart();
+            List<Product> products = cart.getProducts();
 
-            // Actualizar la lista de productos en el carrito
-            cart.setProducts(products);
+            // Verificar si la lista de productos es null
+            if (products == null) {
+                // Si la lista es null, inicialízala como una lista vacía
+                products = new ArrayList<>();
+                cart.setProducts(products);
+            }
 
-            // Guardar el carrito actualizado
-            cartRepository.save(cart);
+            // Verificar si el producto ya está en el carrito
+            boolean productAlreadyInCart = products.stream().anyMatch(p -> p.getId().equals(product.getId()));
+
+            if (!productAlreadyInCart) {
+                products.add(product);
+                cartRepository.save(cart);
+            } else {
+                System.out.println("El producto ya está en el carrito.");
+            }
         } else {
-            System.out.println("No se ha cargado ningún producto");
+            System.out.println("No se ha encontrado el producto.");
         }
     }
 

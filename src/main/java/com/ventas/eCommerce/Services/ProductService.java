@@ -76,6 +76,19 @@ public class ProductService {
 
     }
 
+    public void sale(Integer id, String name, String description, MultipartFile file, String brand, Double price, Category category, Boolean creationDeletion, Integer stock){
+        Optional<Product> respuesta = productRepository.findById(id);
+        if (respuesta.isPresent()){
+            Product product = new Product();
+            if (product.getStock() > 0) {
+                product.setStock(stock - 1);
+            } else {
+               product.setCreationDeletion(false);
+            }
+        }
+
+    }
+
     public List<Product> productList() {
 
         List<Product> products = new ArrayList();

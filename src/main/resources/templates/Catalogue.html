@@ -28,6 +28,9 @@
             <div class="card-body">
                 <div class="cardp">
                     <div class="card-headphone">
+                        <h5 class="stock" th:text="'stock: ' + ${product.stock}">STOCK</h5>
+                    </div>
+                    <div class="card-headphone">
                         <!-- Utiliza th:src para obtener la URL de la imagen del producto -->
                         <img th:src="@{/image/products/__${product.id}__}" alt="headphone">
                     </div>

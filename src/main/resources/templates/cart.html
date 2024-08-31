@@ -51,7 +51,7 @@
                             </td>
                             <th th:text="${product.description}"></th>
                             <td th:text="${product.price}"></td>
-                            <td th:text="${product.name}"></td>
+                            <td> <input id="number" type="number" value="1" min="1" onkeydown="return false;" /></td>
                             <td>
                                 <a id="cesto" th:href="@{/cart/delete/__${product.id}__}"><i class="bi bi-trash"></i>
                                     Eliminar
@@ -83,8 +83,8 @@
                 <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
                             <use xlink:href="#twitter" />
                         </svg></a></li>
-                <li class="ms-3"><a class="link-dark" href="https://www.instagram.com/esencias.clorotuc/"><svg
-                            class="bi" width="24" height="24">
+                <li class="ms-3"><a class="link-dark" href="https://www.instagram.com/antognparfum/"><svg class="bi"
+                            width="24" height="24">
                             <use xlink:href="#instagram" />
                         </svg></a></li>
                 <li class="ms-3"><a class="link-dark" href="https://www.facebook.com/ANTOGNPARFUM"><svg class="bi"
