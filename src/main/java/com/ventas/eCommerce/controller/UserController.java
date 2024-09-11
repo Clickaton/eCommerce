@@ -80,4 +80,10 @@ public class UserController {
     return "cart.html";
     }
 
+    @GetMapping("/profile/{id}")
+    public String profile(HttpSession session, ModelMap model){
+        User logueado=(User) session.getAttribute("usuariosession");
+        return "cart.html";
+    }
+
 }

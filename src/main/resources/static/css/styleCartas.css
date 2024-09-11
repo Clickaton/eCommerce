@@ -3,21 +3,24 @@
   padding: 0;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
   height: 25em;
+  justify-content: center;
   font-family: sans-serif;
+  gap: 2em;
+  flex-wrap: wrap; /* Permite que se envuelvan en una nueva línea */
 }
 
 .card {
   margin: 2em;
   box-sizing: border-box;
   width: 20em;
-  height: 600px;
+  height: 25em;
   border-radius: 1em;
   background: var(--i);
   background-size: cover;
   box-shadow: 3px 5px 5px rgba(3, 32, 51, 0.8);
   overflow: hidden;
+  flex-shrink: 0; /* Evita que se reduzcan */
 }
 
 .content {
@@ -39,4 +42,19 @@ a {
 
 .card:hover .content {
   opacity: 1;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .cards {
+    flex-direction: column;
+    align-items: center;
+    height: 25em;
+  }
+
+  .card {
+    width: 20em; /* Mantiene el ancho fijo */
+    height: 25em; /* Mantiene la altura fija */
+    margin: 1em 0; /* Ajusta el margen para mejor separación */
+  }
 }
