@@ -42,7 +42,11 @@ public class CartService {
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
-            Cart cart = usuario.getCart();
+            // Recargar el carrito desde la base de datos para asegurarnos de tener la última versión
+            Cart cart = cartRepository.findById(usuario.getCart().getId()).orElseThrow(
+                    () -> new IllegalStateException("No se encontró el carrito del usuario")
+            ); //Identificará si existe un problema con el carrito.
+
             List<Product> products = cart.getProducts();
 
             // Verificar si la lista de productos es null
