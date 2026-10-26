@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Confirmar compra')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <h1 class="h3 mb-4">Confirmar compra</h1>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <form th:action="@{/checkout}" th:object="${form}" method="post" class="card" novalidate>
+                <div class="card-body">
+                    <h2 class="h5 mb-3"><i class="bi bi-truck"></i> Datos de envío</h2>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="recipientName" class="form-label">Quién recibe</label>
+                            <input id="recipientName" th:field="*{recipientName}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{recipientName}"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Teléfono de contacto</label>
+                            <input id="phone" th:field="*{phone}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{phone}"></div>
+                        </div>
+                        <div class="col-12">
+                            <label for="street" class="form-label">Dirección</label>
+                            <input id="street" th:field="*{street}" class="form-control" placeholder="Calle, número, piso, depto."
+                                   th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{street}"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="city" class="form-label">Ciudad</label>
+                            <input id="city" th:field="*{city}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{city}"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="province" class="form-label">Provincia</label>
+                            <input id="province" th:field="*{province}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{province}"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="postalCode" class="form-label">Código postal</label>
+                            <input id="postalCode" th:field="*{postalCode}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{postalCode}"></div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-light border mt-4 mb-0 small">
+                        <i class="bi bi-shield-lock"></i>
+                        Al continuar se reserva el stock y se te redirige a la pasarela de pagos.
+                        Tus datos de tarjeta los procesa la pasarela; nunca pasan por este sitio.
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="/cart" class="btn btn-outline-dark">Volver al carrito</a>
+                    <button type="submit" class="btn btn-dark"><i class="bi bi-lock"></i> Ir a pagar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="h5">Tu pedido</h2>
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-1" th:each="item : ${cart.items}">
+                            <span><span th:text="${item.quantity}">1</span> × <span th:text="${item.productName}">Producto</span></span>
+                            <span th:text="${'$ ' + #numbers.formatDecimal(item.subtotal, 1, 'POINT', 2, 'COMMA')}">$ 0</span>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="d-flex justify-content-between fs-5 fw-bold">
+                        <span>Total</span>
+                        <span th:text="${'$ ' + #numbers.formatDecimal(cart.total, 1, 'POINT', 2, 'COMMA')}">$ 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pedido #' + ${order.id})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container-fluid px-lg-4 py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <div class="row">
+        <aside th:replace="~{admin/fragments :: sidebar}"></aside>
+
+        <div class="col-lg-10">
+            <a href="/admin/orders" class="link-dark small"><i class="bi bi-arrow-left"></i> Pedidos</a>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 my-3">
+                <div>
+                    <h1 class="h3 mb-0">Pedido #<span th:text="${order.id}">1</span></h1>
+                    <small class="text-body-secondary" th:text="'Creado el ' + ${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">fecha</small>
+                </div>
+                <span class="badge fs-6" th:classappend="'text-bg-' + ${order.status.badge}" th:text="${order.statusLabel}">Estado</span>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-xl-8">
+                    <div th:replace="~{fragments/order :: items(${order})}"></div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="h6 text-uppercase text-body-secondary">Cliente</h2>
+                            <p class="mb-0 fw-semibold" th:text="${order.customer.fullName}">Cliente</p>
+                            <p class="mb-0" th:text="${order.customer.email}">email</p>
+                        </div>
+                    </div>
+
+                    <div th:replace="~{fragments/order :: shipping(${order})}"></div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="h6 text-uppercase text-body-secondary">Pago</h2>
+                            <p class="mb-1">Pasarela: <span th:text="${order.paymentProvider ?: '—'}">—</span></p>
+                            <p class="mb-0">ID de pago: <code th:text="${order.paymentId ?: '—'}">—</code></p>
+                            <div th:if="${order.paymentId != null and order.status.name() == 'CANCELLED'}" class="alert alert-danger small mt-2 mb-0">
+                                Hay un pago registrado para un pedido cancelado: gestioná el reembolso desde la pasarela.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" th:if="${!nextStatuses.isEmpty()}">
+                        <div class="card-body">
+                            <h2 class="h6 text-uppercase text-body-secondary">Cambiar estado</h2>
+                            <div class="d-grid gap-2">
+                                <form th:each="s : ${nextStatuses}" th:action="@{/admin/orders/{id}/status(id=${order.id})}" method="post"
+                                      th:attr="onsubmit=${s.name() == 'CANCELLED'} ? 'return confirm(\'¿Cancelar el pedido? Se devolverá el stock.\')' : null">
+                                    <input type="hidden" name="status" th:value="${s}">
+                                    <button type="submit" class="btn w-100"
+                                            th:classappend="${s.name() == 'CANCELLED'} ? 'btn-outline-danger' : 'btn-dark'"
+                                            th:text="'Marcar como ' + ${#strings.toLowerCase(s.label)}">Estado</button>
+                                </form>
+                            </div>
+                            <p class="small text-body-secondary mt-2 mb-0" th:if="${order.status.name() == 'PAID'}">
+                                Cancelar un pedido pagado devuelve el stock, pero el reembolso debe hacerse desde la pasarela.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

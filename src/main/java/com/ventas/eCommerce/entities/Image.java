@@ -1,41 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.entities;
 
-
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-/**
- *
- * @author chris
- */
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Image {
 
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-   
-   private String mime;
-   private String name;
-   @Lob @Basic(fetch = FetchType.LAZY) //Informo a spring que este dato puede ser grande y pesado. y el tipo de carga lenta o peresosa.
-   private byte[] content;
 
+    private String mime;
+
+    private String name;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(length = 16 * 1024 * 1024) // MEDIUMBLOB en MySQL
+    private byte[] content;
 }

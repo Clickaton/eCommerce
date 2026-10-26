@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ecommerce-dev",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "C:\\Proyects\\comerc\\eCommerce\\mvnw.cmd", "-q", "-f", "C:\\Proyects\\comerc\\eCommerce\\pom.xml", "spring-boot:run", "-Dspring-boot.run.profiles=dev", "-Dspring-boot.run.arguments=--server.port=8082 --app.base-url=http://localhost:8082"],
+      "port": 8082,
+      "autoPort": false
+    }
+  ]
+}

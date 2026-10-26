@@ -1,64 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.controller;
 
-import com.ventas.eCommerce.Services.ProductService;
-import com.ventas.eCommerce.entities.Image;
-import com.ventas.eCommerce.entities.Product;
 import com.ventas.eCommerce.enums.Category;
-import com.ventas.eCommerce.exceptions.MyException;
-import java.util.List;
-import java.util.logging.Level;
-import org.jboss.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ventas.eCommerce.services.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-/**
- *
- * @author chris
- */
 @Controller
-@RequestMapping("/product")
+@RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @GetMapping("/register")
-    public String registrar_producto() {
-
-        return "ProductForm.html";
+    @GetMapping
+    public String catalogue(@RequestParam(required = false) String q,
+                            @RequestParam(required = false) Category category,
+                            @PageableDefault(size = 12, sort = "name", direction = Sort.Direction.ASC) Pageable pageable,
+                            Model model) {
+        model.addAttribute("page", productService.catalogue(q, category, pageable));
+        model.addAttribute("q", q);
+        model.addAttribute("selectedCategory", category);
+        return "products/catalogue";
     }
 
-    @PostMapping("/registed")
-    public String registro_producto(@RequestParam(required = false)  String name, String description, Image image, String brand, MultipartFile file, Double price, String category, Boolean creationDeletion, Integer stock, ModelMap model) {
-        try {
-            Category categoryEnum = Category.valueOf(category);
-            productService.Register(name, description, file, brand, price, categoryEnum, creationDeletion, stock);
-            model.put("exito", "EL producto se ha registrado correctamente.");
-            return "ProductForm.html";
-        } catch (MyException ex) {
-            model.put("error", ex.getMessage());
-            
-        }
-        return "ProductForm.html";
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Integer id, Model model) {
+        model.addAttribute("product", productService.getActive(id));
+        return "products/detail";
     }
-    
-    @GetMapping("/catalogue")
-    public String registro_catalogo(ModelMap modelo) {
-        List<Product> listaProductos = productService.productList();
-        modelo.addAttribute("listaProductos", listaProductos);
-        return "Catalogue.html";
-    }
-    
-
-    
 }

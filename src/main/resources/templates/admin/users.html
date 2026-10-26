@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Usuarios')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container-fluid px-lg-4 py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <div class="row">
+        <aside th:replace="~{admin/fragments :: sidebar}"></aside>
+
+        <div class="col-lg-10">
+            <h1 class="h3 mb-3">Usuarios</h1>
+
+            <form class="d-flex gap-2 mb-3" action="/admin/users" method="get" style="max-width: 420px">
+                <input type="search" name="q" class="form-control" placeholder="Nombre, apellido o email" th:value="${q}">
+                <button class="btn btn-outline-dark" type="submit">Buscar</button>
+            </form>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Teléfono</th>
+                            <th>Alta</th>
+                            <th>Rol</th>
+                            <th class="text-center">Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="u : ${page.content}" th:classappend="${!u.enabled} ? 'table-secondary'">
+                            <td>
+                                <div class="fw-semibold" th:text="${u.fullName}">Nombre</div>
+                                <small class="text-body-secondary" th:text="${u.email}">email</small>
+                            </td>
+                            <td th:text="${u.phone ?: '—'}">tel</td>
+                            <td th:text="${#temporals.format(u.createdAt, 'dd/MM/yyyy')}">fecha</td>
+                            <td>
+                                <span th:if="${u.id == currentUser.id}" class="badge text-bg-dark" th:text="${u.rol}">ADMIN</span>
+                                <form th:unless="${u.id == currentUser.id}" th:action="@{/admin/users/{id}/role(id=${u.id})}" method="post">
+                                    <select name="rol" class="form-select form-select-sm" style="width: auto" onchange="this.form.submit()"
+                                            th:aria-label="'Rol de ' + ${u.email}">
+                                        <option th:each="r : ${roles}" th:value="${r}" th:text="${r}" th:selected="${r == u.rol}"></option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <form th:unless="${u.id == currentUser.id}" th:action="@{/admin/users/{id}/enabled(id=${u.id})}" method="post">
+                                    <input type="hidden" name="enabled" th:value="${!u.enabled}">
+                                    <button type="submit" class="btn btn-sm"
+                                            th:classappend="${u.enabled} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                            th:text="${u.enabled} ? 'Deshabilitar' : 'Habilitar'">Deshabilitar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <nav th:replace="~{fragments/layout :: pagination(${page}, '/admin/users')}"></nav>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Productos')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container-fluid px-lg-4 py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <div class="row">
+        <aside th:replace="~{admin/fragments :: sidebar}"></aside>
+
+        <div class="col-lg-10">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <h1 class="h3 mb-0">Productos</h1>
+                <a href="/admin/products/new" class="btn btn-dark"><i class="bi bi-plus-lg"></i> Nuevo producto</a>
+            </div>
+
+            <form class="d-flex flex-wrap gap-2 mb-3" action="/admin/products" method="get">
+                <input type="search" name="q" class="form-control" style="max-width: 280px" placeholder="Nombre o marca" th:value="${q}">
+                <select name="category" class="form-select" style="max-width: 220px">
+                    <option value="">Todas las categorías</option>
+                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c.label}" th:selected="${c == selectedCategory}"></option>
+                </select>
+                <button class="btn btn-outline-dark" type="submit">Filtrar</button>
+            </form>
+
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th class="text-end">Precio</th>
+                            <th class="text-center">Stock</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${page.empty}">
+                            <td colspan="7" class="text-center text-body-secondary py-4">No hay productos.</td>
+                        </tr>
+                        <tr th:each="p : ${page.content}" th:classappend="${!p.active} ? 'table-secondary'">
+                            <td>
+                                <img th:if="${p.imageUrl != null}" th:src="${p.imageUrl}" th:alt="${p.name}" class="thumb">
+                                <div th:unless="${p.imageUrl != null}" class="thumb img-placeholder"><i class="bi bi-image"></i></div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold" th:text="${p.name}">Producto</div>
+                                <small class="text-body-secondary" th:text="${p.brand}">Marca</small>
+                            </td>
+                            <td th:text="${p.categoryLabel}">Categoría</td>
+                            <td class="text-end" th:text="${'$ ' + #numbers.formatDecimal(p.price, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+                            <td class="text-center">
+                                <span class="badge" th:classappend="${p.stock == 0} ? 'text-bg-danger' : (${p.stock <= 5} ? 'text-bg-warning' : 'text-bg-light')"
+                                      th:text="${p.stock}">0</span>
+                            </td>
+                            <td class="text-center">
+                                <span th:if="${p.active}" class="badge text-bg-success">Publicado</span>
+                                <span th:unless="${p.active}" class="badge text-bg-secondary">De baja</span>
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a th:href="@{/admin/products/{id}/edit(id=${p.id})}" class="btn btn-sm btn-outline-dark" title="Editar"><i class="bi bi-pencil"></i></a>
+                                <form th:action="@{/admin/products/{id}/active(id=${p.id})}" method="post" class="d-inline">
+                                    <input type="hidden" name="active" th:value="${!p.active}">
+                                    <button type="submit" class="btn btn-sm"
+                                            th:classappend="${p.active} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                            th:title="${p.active} ? 'Dar de baja' : 'Publicar'">
+                                        <i class="bi" th:classappend="${p.active} ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <nav th:replace="~{fragments/layout :: pagination(${page}, '/admin/products')}"></nav>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

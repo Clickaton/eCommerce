@@ -1,0 +1,159 @@
+/* Cards de productos con la animación original (antes stylebox.css + cardbox.css) */
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-box {
+  width: 320px;
+  margin: 10px;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.cardp {
+  position: relative;
+  width: 320px;
+  height: 420px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 3px 5px 5px rgba(3, 32, 51, 0.062);
+}
+
+.cardp::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  transform: skewY(345deg) !important;
+  transition: 0.5s;
+}
+
+.cardp:hover::before {
+  top: -60%;
+  transform: skewY(390deg) !important;
+}
+
+.cardp::after {
+  content: " ANTOGN PARFUM";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-weight: 600;
+  font-size: 2em;
+  color: rgba(0, 0, 0, 0.041);
+}
+
+.cardp .card-headphone {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  z-index: 1;
+}
+
+.cardp .card-headphone img {
+  max-width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  transition: 0.5s;
+}
+
+.cardp .card-headphone .img-placeholder {
+  width: 220px;
+  height: 180px;
+  border-radius: 12px;
+  transition: 0.5s;
+}
+
+.cardp:hover .card-headphone img {
+  max-width: 70%;
+}
+
+.cardp:hover .card-headphone .img-placeholder {
+  transform: scale(0.8);
+}
+
+.cardp:hover .card-infos .buy {
+  top: 10px;
+  opacity: 1;
+}
+
+.cardp .stock {
+  color: aliceblue;
+  height: 0.1em;
+  font-size: 1.1rem;
+}
+
+.cardp .card-infos {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.cardp .card-infos h3 {
+  font-size: 18px;
+  color: rgb(211, 188, 59);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.cardp .card-infos h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardp .card-infos .price {
+  font-size: 24px;
+  color: #000000;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.cardp .card-infos form {
+  margin: 0;
+}
+
+.cardp .card-infos .buy {
+  position: relative;
+  top: 200px;
+  opacity: 0;
+  padding: 10px 30px;
+  margin-top: 15px;
+  color: #fff;
+  text-decoration: none;
+  background: #000000;
+  border: none;
+  border-radius: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+
+.cardp .card-infos .buy:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+/* En pantallas táctiles no hay hover: el botón queda siempre visible */
+@media (hover: none) {
+  .cardp .card-infos .buy {
+    top: 10px;
+    opacity: 1;
+  }
+}

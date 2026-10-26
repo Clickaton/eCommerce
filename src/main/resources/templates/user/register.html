@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Crear cuenta')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-5">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <div class="card mx-auto shadow-sm" style="max-width: 640px">
+        <div class="card-body p-4">
+            <h1 class="h4 mb-4 text-center">Crear cuenta</h1>
+
+            <form th:action="@{/user/register}" th:object="${form}" method="post" enctype="multipart/form-data" novalidate>
+                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                    <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre</label>
+                        <input id="name" th:field="*{name}" class="form-control" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{name}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Apellido</label>
+                        <input id="lastName" th:field="*{lastName}" class="form-control" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{lastName}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" type="email" th:field="*{email}" class="form-control" th:errorclass="is-invalid" autocomplete="username" required>
+                        <div class="invalid-feedback" th:errors="*{email}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input id="phone" th:field="*{phone}" class="form-control" placeholder="1131188134" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{phone}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input id="password" type="password" th:field="*{password}" class="form-control" th:errorclass="is-invalid" autocomplete="new-password" required>
+                        <div class="invalid-feedback" th:errors="*{password}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="confirmPassword" class="form-label">Repetir contraseña</label>
+                        <input id="confirmPassword" type="password" th:field="*{confirmPassword}" class="form-control"
+                               th:errorclass="is-invalid" autocomplete="new-password" required>
+                        <div class="invalid-feedback" th:errors="*{confirmPassword}"></div>
+                        <div class="small text-danger mt-1" th:if="${#fields.hasErrors('passwordConfirmed')}" th:errors="*{passwordConfirmed}"></div>
+                    </div>
+                    <div class="col-12">
+                        <label for="image" class="form-label">Foto de perfil <span class="text-body-secondary">(opcional, máx. 2 MB)</span></label>
+                        <input id="image" type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/webp,image/gif">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark w-100 mt-4">Crear cuenta</button>
+            </form>
+            <p class="text-center mt-3 mb-0 small">¿Ya tenés cuenta? <a href="/user/login" class="link-dark">Ingresá</a></p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

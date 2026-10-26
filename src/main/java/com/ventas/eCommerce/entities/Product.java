@@ -1,49 +1,65 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.entities;
 
-
 import com.ventas.eCommerce.enums.Category;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Version;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-/**
- *
- * @author chris
- */
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Product {
 
-   @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(length = 2000)
     private String description;
-    @OneToOne
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image image;
+
     private String brand;
-    private Double price;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal price;
+
     @Enumerated(EnumType.STRING)
     private Category category;
-    private Boolean creationDeletion;
-    private Integer stock;
-    //@OneToMany(MappedBy="Cart")
-    //private Cart cart;
 
+    /** Borrado lógico: un producto inactivo no aparece en el catálogo ni puede comprarse. */
+    @Column(nullable = false)
+    private boolean active = true;
+
+    @Column(nullable = false)
+    private int stock;
+
+    /** Bloqueo optimista: una edición concurrente sobre una versión vieja falla en lugar de pisar datos. */
+    @Version
+    private Long version;
+
+    public boolean isAvailable() {
+        return active && stock > 0;
+    }
+
+    public boolean hasImage() {
+        return image != null;
+    }
 }

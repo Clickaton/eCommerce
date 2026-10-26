@@ -1,17 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.controller;
 
-import com.ventas.eCommerce.Services.ProductService;
-import com.ventas.eCommerce.Services.UserService;
-import com.ventas.eCommerce.entities.Product;
-import com.ventas.eCommerce.entities.User;
-import javax.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import com.ventas.eCommerce.entities.Image;
+import com.ventas.eCommerce.services.ProductService;
+import com.ventas.eCommerce.services.UserService;
+import java.time.Duration;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,45 +13,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/**
- *
- * @author chris
- */
 @Controller
 @RequestMapping("/image")
+@RequiredArgsConstructor
 public class ImageController {
-    
-    @Autowired
-    ProductService productService;
-    
-    @Autowired
-    UserService userService;
-    
+
+    private final ProductService productService;
+    private final UserService userService;
+
     @GetMapping("/products/{id}")
-    public ResponseEntity<byte[]> productImage (@PathVariable Integer id){
-        Product product = productService.getOne(id);
-        
-        byte[] image = product.getImage().getContent();
-       
-       HttpHeaders headers = new HttpHeaders();
-       
-       headers.setContentType(MediaType.IMAGE_JPEG);
-       
-       return new ResponseEntity<>(image,headers,HttpStatus.OK);
+    public ResponseEntity<byte[]> productImage(@PathVariable Integer id) {
+        return toResponse(productService.getImage(id));
     }
-    
-        @GetMapping("/perfil/{id}")
-    public ResponseEntity<byte[]> imagenUsuario (@PathVariable Integer id, HttpSession session ){
-        User user = userService.getOne(id);
-       
-       byte[] image = user.getImage().getContent();
-       
-       HttpHeaders headers = new HttpHeaders();
-       
-       headers.setContentType(MediaType.IMAGE_JPEG);
-       
-       return new ResponseEntity<>(image, headers, HttpStatus.OK);
-       
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<byte[]> userImage(@PathVariable Integer id) {
+        return toResponse(userService.getImage(id));
     }
-    
+
+    private static ResponseEntity<byte[]> toResponse(Image image) {
+        MediaType type = image.getMime() != null ? MediaType.parseMediaType(image.getMime()) : MediaType.IMAGE_JPEG;
+        return ResponseEntity.ok()
+                .contentType(type)
+                .cacheControl(CacheControl.maxAge(Duration.ofMinutes(10)))
+                .body(image.getContent());
+    }
 }

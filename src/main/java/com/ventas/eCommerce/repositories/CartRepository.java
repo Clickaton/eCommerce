@@ -1,25 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.repositories;
 
 import com.ventas.eCommerce.entities.Cart;
-import com.ventas.eCommerce.entities.User;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author chris
- */
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    @Query("SELECT c FROM Cart c WHERE c.id = :id")
-    public Cart findCartById(@Param("id") Integer id);
+    @Query("""
+            SELECT c FROM User u JOIN u.cart c
+            LEFT JOIN FETCH c.items i
+            LEFT JOIN FETCH i.product
+            WHERE u.id = :userId
+            """)
+    Optional<Cart> findByUserId(@Param("userId") Integer userId);
+
+    @Query("SELECT COALESCE(SUM(i.quantity), 0) FROM User u JOIN u.cart c JOIN c.items i WHERE u.id = :userId")
+    int countItemsByUserId(@Param("userId") Integer userId);
 }
-
-

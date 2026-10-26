@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Catálogo')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <h1 class="h3 mb-0">Catálogo</h1>
+            <small class="text-body-secondary" th:text="${page.totalElements} + ' producto(s)'">0 productos</small>
+        </div>
+        <form class="d-flex gap-2" action="/products" method="get">
+            <input type="search" name="q" class="form-control" placeholder="Nombre o marca" th:value="${q}">
+            <select name="category" class="form-select" onchange="this.form.submit()">
+                <option value="">Todas las categorías</option>
+                <option th:each="c : ${categories}" th:value="${c}" th:text="${c.label}"
+                        th:selected="${c == selectedCategory}"></option>
+            </select>
+            <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+
+    <div th:if="${page.empty}" class="text-center py-5 text-body-secondary">
+        <i class="bi bi-search fs-1"></i>
+        <p class="mt-2">No encontramos productos con esos filtros.</p>
+        <a href="/products" class="btn btn-outline-dark">Ver todo el catálogo</a>
+    </div>
+
+    <div class="product-grid">
+        <th:block th:each="product : ${page.content}"><div th:replace="~{fragments/layout :: productCard(${product})}"></div></th:block>
+    </div>
+
+    <nav th:replace="~{fragments/layout :: pagination(${page}, '/products')}"></nav>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

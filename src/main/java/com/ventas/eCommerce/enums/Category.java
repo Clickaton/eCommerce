@@ -1,21 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
- */
 package com.ventas.eCommerce.enums;
 
-/**
- *
- * @author chris
- */
 public enum Category {
-    ELECTRONICDEVICES,
-    SERVICES,
-    FOOD,
-    INDUMENTARY,
-    JEWELRY,
-    ENTERTAINMENT,
-    RAW_MATERIAL,
-    CLEANLINESS,
-    CONSTRUCTION,
+    ELECTRONICDEVICES("Electrónica"),
+    SERVICES("Servicios"),
+    FOOD("Alimentos"),
+    INDUMENTARY("Indumentaria"),
+    JEWELRY("Joyería"),
+    ENTERTAINMENT("Entretenimiento"),
+    RAW_MATERIAL("Materia prima"),
+    CLEANLINESS("Limpieza"),
+    CONSTRUCTION("Construcción"),
+    FRAGRANCES("Fragancias");
+
+    private final String label;
+
+    Category(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 }

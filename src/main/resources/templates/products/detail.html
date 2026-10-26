@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${product.name})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/products" class="link-dark">Catálogo</a></li>
+            <li class="breadcrumb-item" th:if="${product.category != null}">
+                <a th:href="@{/products(category=${product.category})}" class="link-dark" th:text="${product.categoryLabel}">Categoría</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${product.name}">Producto</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <th:block th:replace="~{fragments/layout :: productImage(${product}, 'product-img-lg shadow-sm')}"></th:block>
+        </div>
+        <div class="col-md-6">
+            <small class="text-body-secondary text-uppercase" th:text="${product.brand}">Marca</small>
+            <h1 class="h2" th:text="${product.name}">Producto</h1>
+            <p class="display-6 fw-bold" th:text="${'$ ' + #numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}">$ 0</p>
+            <p class="text-body-secondary" style="white-space: pre-line" th:text="${product.description}">Descripción</p>
+
+            <div th:if="${product.available}">
+                <p class="text-success"><i class="bi bi-check-circle"></i> <span th:text="${product.stock}">0</span> unidad(es) disponibles</p>
+                <form th:action="@{/cart/items}" method="post" class="d-flex gap-2 align-items-center">
+                    <input type="hidden" name="productId" th:value="${product.id}">
+                    <label for="quantity" class="visually-hidden">Cantidad</label>
+                    <input id="quantity" type="number" name="quantity" value="1" min="1" th:max="${product.stock}"
+                           class="form-control qty-input" required>
+                    <button type="submit" class="btn btn-dark btn-lg"><i class="bi bi-bag-plus"></i> Agregar al carrito</button>
+                </form>
+            </div>
+            <p th:unless="${product.available}" class="text-danger"><i class="bi bi-x-circle"></i> Sin stock por el momento</p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

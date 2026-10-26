@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${form.isNew()} ? 'Nuevo producto' : 'Editar producto')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container-fluid px-lg-4 py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <div class="row">
+        <aside th:replace="~{admin/fragments :: sidebar}"></aside>
+
+        <div class="col-lg-10">
+            <a href="/admin/products" class="link-dark small"><i class="bi bi-arrow-left"></i> Productos</a>
+            <h1 class="h3 my-3" th:text="${form.isNew()} ? 'Nuevo producto' : 'Editar producto'">Producto</h1>
+
+            <form th:action="${form.isNew()} ? @{/admin/products} : @{/admin/products/{id}(id=${form.id})}"
+                  th:object="${form}" method="post" enctype="multipart/form-data" class="card" style="max-width: 900px" novalidate>
+                <input type="hidden" th:field="*{version}">
+                <input type="hidden" th:field="*{hasImage}">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label for="name" class="form-label">Nombre</label>
+                            <input id="name" th:field="*{name}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{name}"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="brand" class="form-label">Marca</label>
+                            <input id="brand" th:field="*{brand}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{brand}"></div>
+                        </div>
+                        <div class="col-12">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea id="description" th:field="*{description}" rows="4" class="form-control" th:errorclass="is-invalid" required></textarea>
+                            <div class="invalid-feedback" th:errors="*{description}"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="category" class="form-label">Categoría</label>
+                            <select id="category" th:field="*{category}" class="form-select" th:errorclass="is-invalid" required>
+                                <option value="">Seleccioná…</option>
+                                <option th:each="c : ${categories}" th:value="${c}" th:text="${c.label}"></option>
+                            </select>
+                            <div class="invalid-feedback" th:errors="*{category}"></div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="price" class="form-label">Precio</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text">$</span>
+                                <input id="price" type="number" step="0.01" min="0.01" th:field="*{price}" class="form-control" th:errorclass="is-invalid" required>
+                                <div class="invalid-feedback" th:errors="*{price}"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="stock" class="form-label">Stock</label>
+                            <input id="stock" type="number" min="0" step="1" th:field="*{stock}" class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{stock}"></div>
+                        </div>
+                        <div class="col-md-8">
+                            <label for="image" class="form-label">Imagen <span class="text-body-secondary">(máx. 2 MB)</span></label>
+                            <input id="image" type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/webp,image/gif">
+                            <div class="form-text" th:if="*{hasImage}">Dejalo vacío para conservar la imagen actual.</div>
+                        </div>
+                        <div class="col-md-4" th:if="*{!isNew() and hasImage}">
+                            <img th:src="@{/image/products/{id}(id=*{id})}" alt="Imagen actual" class="thumb" style="width: 120px; height: 120px">
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input id="active" type="checkbox" th:field="*{active}" class="form-check-input">
+                                <label for="active" class="form-check-label">Publicado en el catálogo</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end gap-2">
+                    <a href="/admin/products" class="btn btn-outline-dark">Cancelar</a>
+                    <button type="submit" class="btn btn-dark">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

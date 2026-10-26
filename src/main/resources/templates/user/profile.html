@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Mi perfil')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <div class="card mx-auto shadow-sm" style="max-width: 720px">
+        <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <img th:if="${user.imageUrl != null}" th:src="${user.imageUrl}" alt="Foto de perfil" class="avatar">
+                <div th:unless="${user.imageUrl != null}" class="avatar img-placeholder"><i class="bi bi-person"></i></div>
+                <div>
+                    <h1 class="h4 mb-0" th:text="${user.fullName}">Nombre</h1>
+                    <span class="text-body-secondary" th:text="${user.email}">email</span>
+                </div>
+            </div>
+
+            <form th:action="@{/user/profile}" th:object="${form}" method="post" enctype="multipart/form-data" novalidate>
+                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                    <p class="mb-0" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre</label>
+                        <input id="name" th:field="*{name}" class="form-control" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{name}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Apellido</label>
+                        <input id="lastName" th:field="*{lastName}" class="form-control" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{lastName}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input id="phone" th:field="*{phone}" class="form-control" th:errorclass="is-invalid" required>
+                        <div class="invalid-feedback" th:errors="*{phone}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="image" class="form-label">Cambiar foto <span class="text-body-secondary">(máx. 2 MB)</span></label>
+                        <input id="image" type="file" name="image" class="form-control" accept="image/png,image/jpeg,image/webp,image/gif">
+                    </div>
+                </div>
+
+                <h2 class="h6 mt-4 text-uppercase text-body-secondary">Cambiar contraseña <small class="text-lowercase">(opcional)</small></h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="currentPassword" class="form-label">Contraseña actual</label>
+                        <input id="currentPassword" type="password" th:field="*{currentPassword}" class="form-control" autocomplete="current-password">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="newPassword" class="form-label">Nueva contraseña</label>
+                        <input id="newPassword" type="password" th:field="*{newPassword}" class="form-control" autocomplete="new-password">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="confirmNewPassword" class="form-label">Repetir nueva</label>
+                        <input id="confirmNewPassword" type="password" th:field="*{confirmNewPassword}" class="form-control" autocomplete="new-password">
+                    </div>
+                </div>
+                <div class="small text-danger mt-2" th:if="${#fields.hasErrors('newPasswordValid')}" th:errors="*{newPasswordValid}"></div>
+
+                <button type="submit" class="btn btn-dark mt-4">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

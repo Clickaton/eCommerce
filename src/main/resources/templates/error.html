@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-5 text-center">
+    <p class="display-1 fw-bold text-body-tertiary" th:text="${status}">404</p>
+    <h1 class="h3" th:text="${status == 404} ? 'No encontramos lo que buscás' : (${status == 403} ? 'No tenés permiso para ver esta página' : 'Algo salió mal')">Error</h1>
+    <p class="text-body-secondary" th:if="${message != null and !#strings.isEmpty(message)}" th:text="${message}"></p>
+    <a href="/" class="btn btn-dark mt-3">Volver al inicio</a>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

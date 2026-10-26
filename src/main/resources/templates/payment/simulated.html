@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pago simulado')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-5">
+    <div class="card mx-auto auth-card shadow-sm">
+        <div class="card-body p-4 text-center">
+            <span class="badge text-bg-warning mb-3">Modo desarrollo</span>
+            <h1 class="h4">Pasarela de pago simulada</h1>
+            <p class="text-body-secondary small">
+                Esta pantalla reemplaza al checkout de MercadoPago mientras <code>payment.provider=simulated</code>.
+                No ingreses datos reales.
+            </p>
+            <p class="mb-1">Pedido <strong th:text="'#' + ${order.id}">#1</strong></p>
+            <p class="display-6 fw-bold" th:text="${'$ ' + #numbers.formatDecimal(order.total, 1, 'POINT', 2, 'COMMA')}">$ 0</p>
+
+            <div th:if="${order.payable}" class="d-grid gap-2 mt-4">
+                <form th:action="@{/payments/simulated/{id}(id=${order.id})}" method="post">
+                    <input type="hidden" name="approved" value="true">
+                    <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-lg"></i> Aprobar pago</button>
+                </form>
+                <form th:action="@{/payments/simulated/{id}(id=${order.id})}" method="post">
+                    <input type="hidden" name="approved" value="false">
+                    <button type="submit" class="btn btn-outline-danger w-100"><i class="bi bi-x-lg"></i> Rechazar pago</button>
+                </form>
+            </div>
+            <p th:unless="${order.payable}" class="text-body-secondary">Este pedido ya no está pendiente de pago.</p>
+            <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-link link-dark mt-2">Volver al pedido</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

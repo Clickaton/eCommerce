@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Panel de administración')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container-fluid px-lg-4 py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+    <div class="row">
+        <aside th:replace="~{admin/fragments :: sidebar}"></aside>
+
+        <div class="col-lg-10">
+            <h1 class="h3 mb-4">Hola, <span th:text="${currentUser.name}">Admin</span></h1>
+
+            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3 mb-4">
+                <div class="col">
+                    <a href="/admin/orders?status=PENDING" class="card stat-card h-100 text-decoration-none">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">Pendientes de pago</div>
+                            <div class="stat-value text-warning" th:text="${stats.pendingOrders}">0</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/admin/orders?status=PAID" class="card stat-card h-100 text-decoration-none">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">Para enviar</div>
+                            <div class="stat-value text-success" th:text="${stats.paidOrders}">0</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/admin/orders?status=SHIPPED" class="card stat-card h-100 text-decoration-none">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">En camino</div>
+                            <div class="stat-value text-info" th:text="${stats.shippedOrders}">0</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <div class="card stat-card h-100">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">Facturado</div>
+                            <div class="stat-value" th:text="${'$ ' + #numbers.formatDecimal(stats.revenue, 1, 'POINT', 0, 'COMMA')}">$ 0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <a href="/admin/products" class="card stat-card h-100 text-decoration-none">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">Productos activos</div>
+                            <div class="stat-value" th:text="${stats.activeProducts}">0</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/admin/users" class="card stat-card h-100 text-decoration-none">
+                        <div class="card-body">
+                            <div class="text-body-secondary small">Clientes</div>
+                            <div class="stat-value" th:text="${stats.customers}">0</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-xl-8">
+                    <div class="card h-100">
+                        <div class="card-header d-flex justify-content-between align-items-center bg-transparent">
+                            <h2 class="h6 mb-0">Últimos pedidos</h2>
+                            <a href="/admin/orders" class="small link-dark">Ver todos</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <tbody>
+                                <tr th:if="${stats.latestOrders.isEmpty()}">
+                                    <td class="text-body-secondary text-center py-4">Todavía no hay pedidos.</td>
+                                </tr>
+                                <tr th:each="order : ${stats.latestOrders}">
+                                    <td><a th:href="@{/admin/orders/{id}(id=${order.id})}" class="link-dark fw-semibold" th:text="'#' + ${order.id}">#1</a></td>
+                                    <td th:text="${order.customer.fullName}">Cliente</td>
+                                    <td class="small text-body-secondary" th:text="${#temporals.format(order.createdAt, 'dd/MM HH:mm')}">fecha</td>
+                                    <td><span class="badge" th:classappend="'text-bg-' + ${order.status.badge}" th:text="${order.statusLabel}">Estado</span></td>
+                                    <td class="text-end" th:text="${'$ ' + #numbers.formatDecimal(order.total, 1, 'POINT', 2, 'COMMA')}">$ 0</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-transparent">
+                            <h2 class="h6 mb-0">Stock bajo <span class="badge text-bg-danger" th:text="${stats.lowStockProducts}">0</span></h2>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-body-secondary" th:if="${stats.lowStock.isEmpty()}">Sin alertas de stock.</li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center" th:each="p : ${stats.lowStock}">
+                                <a th:href="@{/admin/products/{id}/edit(id=${p.id})}" class="link-dark" th:text="${p.name}">Producto</a>
+                                <span class="badge" th:classappend="${p.stock == 0} ? 'text-bg-danger' : 'text-bg-warning'" th:text="${p.stock}">0</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

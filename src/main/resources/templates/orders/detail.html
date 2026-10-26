@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Pedido #' + ${order.id})}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="container py-4">
+    <div th:replace="~{fragments/layout :: messages}"></div>
+
+    <a href="/orders" class="link-dark small"><i class="bi bi-arrow-left"></i> Mis pedidos</a>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 my-3">
+        <div>
+            <h1 class="h3 mb-0">Pedido #<span th:text="${order.id}">1</span></h1>
+            <small class="text-body-secondary" th:text="'Realizado el ' + ${#temporals.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">fecha</small>
+        </div>
+        <span class="badge fs-6" th:classappend="'text-bg-' + ${order.status.badge}" th:text="${order.statusLabel}">Estado</span>
+    </div>
+
+    <div th:if="${order.payable}" class="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <span><i class="bi bi-hourglass-split"></i> Este pedido está pendiente de pago. El stock queda reservado por un tiempo limitado.</span>
+        <div class="d-flex gap-2">
+            <form th:action="@{/orders/{id}/pay(id=${order.id})}" method="post">
+                <button type="submit" class="btn btn-dark btn-sm"><i class="bi bi-credit-card"></i> Pagar ahora</button>
+            </form>
+            <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post"
+                  onsubmit="return confirm('¿Cancelar el pedido? Se liberará el stock reservado.')">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Cancelar pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div th:replace="~{fragments/order :: items(${order})}"></div>
+        </div>
+        <div class="col-lg-4">
+            <div th:replace="~{fragments/order :: shipping(${order})}"></div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

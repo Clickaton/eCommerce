@@ -1,33 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.ventas.eCommerce.repositories;
 
 import com.ventas.eCommerce.entities.User;
+import com.ventas.eCommerce.enums.Rol;
+import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- *
- * @author chris
- */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("SELECT u FROM User u WHERE u.email = :email")
-    public User findByEmail(@Param("email") String email);
+    Optional<User> findByEmailIgnoreCase(String email);
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.email = :email")
-    Long countByEMail(@Param("email") String email);
+    boolean existsByEmailIgnoreCase(String email);
 
-    default boolean existsByEmail(String email) {
-        return countByEMail(email) > 0;
-    }
+    boolean existsByPhone(String phone);
 
-    @Query("SELECT u FROM User u WHERE u.phone = :phone")
-    public User findByPhone(@Param("phone") String phone);
+    boolean existsByPhoneAndIdNot(String phone, Integer id);
 
+    long countByRol(Rol rol);
+
+    @Query("""
+            SELECT u FROM User u
+            WHERE :q IS NULL
+               OR LOWER(u.email) LIKE LOWER(CONCAT('%', :q, '%'))
+               OR LOWER(u.name) LIKE LOWER(CONCAT('%', :q, '%'))
+               OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :q, '%'))
+            """)
+    Page<User> search(@Param("q") String q, Pageable pageable);
 }

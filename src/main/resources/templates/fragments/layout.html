@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- Encabezado común. Uso: <head th:replace="~{fragments/layout :: head('Título')}"></head> -->
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' | AntognParfum'">AntognParfum</title>
+    <link rel="icon" href="/resources/images/logoantogn.png">
+    <!-- Bootstrap 5.3 compilado con la paleta de la marca (ver css/nav.scss) -->
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/product-cards.css">
+</head>
+
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-black sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <img src="/resources/images/logoantogn.png" alt="AntognParfum" class="brand-logo">
+            <span class="fw-semibold">AntognParfum</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="/products">Catálogo</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/orders">Mis pedidos</a></li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link" href="/admin"><i class="bi bi-speedometer2"></i> Panel</a>
+                </li>
+            </ul>
+
+            <form class="d-flex me-lg-3 mb-2 mb-lg-0" role="search" action="/products" method="get">
+                <input class="form-control form-control-sm" type="search" name="q" placeholder="Buscar productos…"
+                       aria-label="Buscar" th:value="${q}">
+            </form>
+
+            <div class="d-flex align-items-center gap-2">
+                <th:block sec:authorize="!isAuthenticated()">
+                    <a href="/user/login" class="btn btn-outline-light btn-sm">Ingresar</a>
+                    <a href="/user/register" class="btn btn-light btn-sm">Registrarse</a>
+                </th:block>
+
+                <th:block sec:authorize="isAuthenticated()">
+                    <a href="/cart" class="btn btn-outline-light btn-sm position-relative" aria-label="Carrito">
+                        <i class="bi bi-bag"></i>
+                        <span th:if="${cartCount != null and cartCount > 0}" th:text="${cartCount}"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                            <span th:text="${currentUser?.name} ?: ${#authentication.name}">Usuario</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/user/profile"><i class="bi bi-person"></i> Mi perfil</a></li>
+                            <li><a class="dropdown-item" href="/orders"><i class="bi bi-receipt"></i> Mis pedidos</a></li>
+                            <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" href="/admin"><i class="bi bi-speedometer2"></i> Panel de administración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mensajes flash: success / info / error -->
+<div th:fragment="messages" class="container mt-3">
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle"></i> <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    <div th:if="${info}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <i class="bi bi-info-circle"></i> <span th:text="${info}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+</div>
+
+<!-- Paginación. Uso: th:replace="~{fragments/layout :: pagination(${page}, '/products')}" conservando los filtros -->
+<nav th:fragment="pagination(page, baseUrl)" th:if="${page.totalPages > 1}" aria-label="Paginación" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+            <a class="page-link" th:href="@{${baseUrl}(page=${page.number - 1}, q=${q}, category=${selectedCategory}, status=${selectedStatus})}">&laquo;</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+            th:classappend="${i == page.number} ? 'active'">
+            <a class="page-link" th:href="@{${baseUrl}(page=${i}, q=${q}, category=${selectedCategory}, status=${selectedStatus})}"
+               th:text="${i + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+            <a class="page-link" th:href="@{${baseUrl}(page=${page.number + 1}, q=${q}, category=${selectedCategory}, status=${selectedStatus})}">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+
+<!-- Imagen de producto con placeholder si no tiene -->
+<th:block th:fragment="productImage(product, cssClass)">
+    <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}" th:alt="${product.name}" th:class="${cssClass}">
+    <div th:unless="${product.imageUrl != null}" th:class="${cssClass} + ' img-placeholder'">
+        <i class="bi bi-image"></i>
+    </div>
+</th:block>
+
+<!-- Card de producto con la animación original (css/product-cards.css) -->
+<div th:fragment="productCard(product)" class="card-box">
+    <div class="cardp">
+        <div class="card-headphone">
+            <h5 class="stock" th:text="${product.available} ? 'stock: ' + ${product.stock} : 'sin stock'">stock</h5>
+        </div>
+        <a class="card-headphone" th:href="@{/products/{id}(id=${product.id})}">
+            <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}" th:alt="${product.name}">
+            <div th:unless="${product.imageUrl != null}" class="img-placeholder"><i class="bi bi-image"></i></div>
+        </a>
+        <div class="card-infos">
+            <h3><a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}">Producto</a></h3>
+            <h2 class="price" th:text="${'$' + #numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}">$0</h2>
+            <form th:if="${product.available}" th:action="@{/cart/items}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="buy">Agregar al carrito</button>
+            </form>
+            <button th:unless="${product.available}" type="button" class="buy" disabled>Sin stock</button>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer" class="site-footer mt-5 py-4 border-top">
+    <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+        <p class="mb-0 text-body-secondary">&copy; <span th:text="${#temporals.year(#temporals.createNow())}">2026</span> AntognParfum. Todos los derechos reservados.</p>
+        <ul class="list-unstyled d-flex gap-3 mb-0">
+            <li><a class="link-body-emphasis" href="https://www.instagram.com/antognparfum/" aria-label="Instagram"><i class="bi bi-instagram fs-5"></i></a></li>
+            <li><a class="link-body-emphasis" href="https://www.facebook.com/ANTOGNPARFUM" aria-label="Facebook"><i class="bi bi-facebook fs-5"></i></a></li>
+            <li><a class="link-body-emphasis" href="https://wa.me/5491131188134" aria-label="WhatsApp"><i class="bi bi-whatsapp fs-5"></i></a></li>
+        </ul>
+    </div>
+</footer>
+
+<th:block th:fragment="scripts">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+</th:block>
+
+</body>
+</html>
